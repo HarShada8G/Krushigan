@@ -1,4 +1,4 @@
-import pytest
+﻿import pytest
 from fastapi.testclient import TestClient
 from app.main import app
 
@@ -8,9 +8,9 @@ def test_root():
     response = client.get("/")
     assert response.status_code == 200
     data = response.json()
-    assert data["app"] == "CropGuardian API"
-    assert data["team"] == "KRANTIKARI"
-    assert data["problemStatementId"] == "26131"
+    assert data["app"] == "Krushigan API"
+    assert data["team"] == "Krushigan Platform"
+    assert data["problemStatementId"] == ""
 
 def test_health():
     response = client.get("/api/health")

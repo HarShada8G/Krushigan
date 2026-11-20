@@ -43,7 +43,7 @@ export const getFarmerProfile = async (): Promise<FarmerProfile> => {
   } catch (e) {
     // Fallback to local storage or demo
   }
-  const saved = localStorage.getItem('cropguardian_farmer_profile');
+  const saved = localStorage.getItem('krushigan_farmer_profile');
   return saved ? JSON.parse(saved) : DEMO_FARMER;
 };
 
@@ -60,7 +60,7 @@ export const updateFarmerProfile = async (profile: Partial<FarmerProfile>): Prom
   }
   const current = await getFarmerProfile();
   const updated = { ...current, ...profile };
-  localStorage.setItem('cropguardian_farmer_profile', JSON.stringify(updated));
+  localStorage.setItem('krushigan_farmer_profile', JSON.stringify(updated));
   return updated;
 };
 
@@ -128,7 +128,7 @@ export const analyzeCropPhoto = async (
         applicationInstructions: matchedDisease.recommendations.red.applicationInstructionsHi,
         safetyPrecautions: matchedDisease.recommendations.red.safetyPrecautionsHi,
         preHarvestInterval: matchedDisease.recommendations.red.preHarvestIntervalDays 
-          ? `${matchedDisease.recommendations.red.preHarvestIntervalDays} दिन (Days)` 
+          ? `${matchedDisease.recommendations.red.preHarvestIntervalDays} à¤¦à¤¿à¤¨ (Days)` 
           : undefined,
         disclaimer: matchedDisease.recommendations.red.disclaimerHi
       }
@@ -140,12 +140,12 @@ export const analyzeCropPhoto = async (
 
 // Reports History
 export const getFarmerReports = async (): Promise<CropReport[]> => {
-  const localHistoryStr = localStorage.getItem('cropguardian_reports_history');
+  const localHistoryStr = localStorage.getItem('krushigan_reports_history');
   let localReports: CropReport[] = localHistoryStr ? JSON.parse(localHistoryStr) : [];
   
   if (localReports.length === 0) {
     localReports = INITIAL_DEMO_REPORTS;
-    localStorage.setItem('cropguardian_reports_history', JSON.stringify(localReports));
+    localStorage.setItem('krushigan_reports_history', JSON.stringify(localReports));
   }
   return localReports;
 };
@@ -153,7 +153,7 @@ export const getFarmerReports = async (): Promise<CropReport[]> => {
 export const saveCropReport = async (report: CropReport): Promise<CropReport> => {
   const history = await getFarmerReports();
   const updated = [report, ...history.filter(r => r.id !== report.id)];
-  localStorage.setItem('cropguardian_reports_history', JSON.stringify(updated));
+  localStorage.setItem('krushigan_reports_history', JSON.stringify(updated));
   return report;
 };
 
@@ -174,7 +174,7 @@ export const updateReportFollowUp = async (
     }
     return r;
   });
-  localStorage.setItem('cropguardian_reports_history', JSON.stringify(updated));
+  localStorage.setItem('krushigan_reports_history', JSON.stringify(updated));
 };
 
 // Officer and GIS APIs
@@ -189,7 +189,7 @@ export const getHotspotData = async (): Promise<MaharashtraDistrictHotspot[]> =>
 };
 
 export const getBroadcastAlerts = async (): Promise<BroadcastAlert[]> => {
-  const saved = localStorage.getItem('cropguardian_broadcast_alerts');
+  const saved = localStorage.getItem('krushigan_broadcast_alerts');
   if (saved) {
     try {
       return JSON.parse(saved);
@@ -201,7 +201,7 @@ export const getBroadcastAlerts = async (): Promise<BroadcastAlert[]> => {
 export const createBroadcastAlert = async (alert: BroadcastAlert): Promise<BroadcastAlert> => {
   const current = await getBroadcastAlerts();
   const updated = [alert, ...current];
-  localStorage.setItem('cropguardian_broadcast_alerts', JSON.stringify(updated));
+  localStorage.setItem('krushigan_broadcast_alerts', JSON.stringify(updated));
   return alert;
 };
 

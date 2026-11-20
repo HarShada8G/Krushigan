@@ -1,0 +1,11 @@
+{
+  "name": "krushigan",
+  "version": "1.0.0",
+  "description": "Krushigan (कृषिगण) — AI-Powered Crop Disease Detection & Early Warning Platform",
+  "private": true,
+  "scripts": {
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && .\\venv\\Scripts\\python run.py",
+    "build": "cd frontend && npm run build"
+  }
+}

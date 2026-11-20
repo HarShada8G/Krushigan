@@ -8,39 +8,40 @@ from app.models.schemas import AnalyzeRequest
 def run_tests():
     print("Testing root endpoint...")
     r = root()
-    assert r["app"] == "CropGuardian API"
-    assert r["team"] == "KRANTIKARI"
-    print("✓ root passed:", r["tagline"])
+    assert r["app"] == "Krushigan API"
+    # team field removed in rebrand
+    print("??? root passed:", r["tagline"])
 
     print("Testing health check...")
     h = health_check()
     assert h["status"] == "healthy"
-    print("✓ health passed")
+    print("??? health passed")
 
     print("Testing farmer profile...")
     prof = get_profile()
     assert prof.district == "Akola"
-    print("✓ profile passed:", prof.name)
+    print("??? profile passed:", prof.name)
 
     print("Testing weather...")
     w = get_current_weather("Akola")
     assert w.district == "Akola"
-    print(f"✓ weather passed: {w.temperature}°C, {w.humidity}% humidity")
+    print(f"??? weather passed: {w.temperature}??C, {w.humidity}% humidity")
 
     print("Testing AI analysis...")
     diag = analyze_crop(AnalyzeRequest(image_data="demo_data", crop="Tomato", growth_stage="Flowering"))
     assert diag.crop == "Tomato"
     assert len(diag.recommendations.green.items) > 0
-    print("✓ AI analysis passed:", diag.detectedProblem)
+    print("??? AI analysis passed:", diag.detectedProblem)
 
     print("Testing officer dashboard & hotspots...")
     dash = get_dashboard_summary()
     assert dash["stats"]["totalReports"] == 1420
     spots = get_hotspots()
     assert len(spots) >= 5
-    print(f"✓ officer passed: {len(spots)} hotspots loaded successfully")
+    print(f"??? officer passed: {len(spots)} hotspots loaded successfully")
 
     print("\nALL 6 BACKEND ROUTE TESTS PASSED 100%!")
 
 if __name__ == "__main__":
     run_tests()
+

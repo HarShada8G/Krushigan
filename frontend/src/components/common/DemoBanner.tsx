@@ -10,7 +10,7 @@ export const DemoBanner: React.FC = () => {
       <div className="flex items-center space-x-2 truncate">
         <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         <span className="font-semibold text-emerald-200 uppercase tracking-wider text-[11px]">
-          SIH-26131 PROTOTYPE
+          KRUSHIGAN PLATFORM
         </span>
         <span className="hidden md:inline text-white/80">|</span>
         <span className="truncate text-white/90">

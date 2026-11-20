@@ -18,7 +18,7 @@ export const OfflineProvider: React.FC<{ children: ReactNode }> = ({ children })
   const [syncSuccessMessage, setSyncSuccessMessage] = useState<string | null>(null);
 
   const [queuedReports, setQueuedReports] = useState<CropReport[]>(() => {
-    const saved = localStorage.getItem('cropguardian_offline_queue');
+    const saved = localStorage.getItem('krushigan_offline_queue');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -30,7 +30,7 @@ export const OfflineProvider: React.FC<{ children: ReactNode }> = ({ children })
   });
 
   useEffect(() => {
-    localStorage.setItem('cropguardian_offline_queue', JSON.stringify(queuedReports));
+    localStorage.setItem('krushigan_offline_queue', JSON.stringify(queuedReports));
   }, [queuedReports]);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export const OfflineProvider: React.FC<{ children: ReactNode }> = ({ children })
       await new Promise(resolve => setTimeout(resolve, 1500));
 
       // Append queued reports into farmer history storage
-      const existingHistoryStr = localStorage.getItem('cropguardian_reports_history');
+      const existingHistoryStr = localStorage.getItem('krushigan_reports_history');
       let history: CropReport[] = existingHistoryStr ? JSON.parse(existingHistoryStr) : [];
       
       const newItems = queuedReports.map(item => ({
@@ -74,11 +74,11 @@ export const OfflineProvider: React.FC<{ children: ReactNode }> = ({ children })
         status: 'pending' as const
       }));
 
-      localStorage.setItem('cropguardian_reports_history', JSON.stringify([...newItems, ...history]));
+      localStorage.setItem('krushigan_reports_history', JSON.stringify([...newItems, ...history]));
       
       const count = queuedReports.length;
       setQueuedReports([]);
-      setSyncSuccessMessage(`${count} ऑफ़लाइन रिपोर्ट सफलतापूर्वक सर्वर से सिंक हो गई! (${count} report(s) synced)`);
+      setSyncSuccessMessage(`${count} à¤‘à¤«à¤¼à¤²à¤¾à¤‡à¤¨ à¤°à¤¿à¤ªà¥‹à¤°à¥à¤Ÿ à¤¸à¤«à¤²à¤¤à¤¾à¤ªà¥‚à¤°à¥à¤µà¤• à¤¸à¤°à¥à¤µà¤° à¤¸à¥‡ à¤¸à¤¿à¤‚à¤• à¤¹à¥‹ à¤—à¤ˆ! (${count} report(s) synced)`);
 
       setTimeout(() => {
         setSyncSuccessMessage(null);

@@ -51,7 +51,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('cropguardian_user');
+    const saved = localStorage.getItem('krushigan_user');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -64,7 +64,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   });
 
   const [farmerProfile, setFarmerProfile] = useState<FarmerProfile>(() => {
-    const saved = localStorage.getItem('cropguardian_farmer_profile');
+    const saved = localStorage.getItem('krushigan_farmer_profile');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -77,14 +77,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     if (user) {
-      localStorage.setItem('cropguardian_user', JSON.stringify(user));
+      localStorage.setItem('krushigan_user', JSON.stringify(user));
     } else {
-      localStorage.removeItem('cropguardian_user');
+      localStorage.removeItem('krushigan_user');
     }
   }, [user]);
 
   useEffect(() => {
-    localStorage.setItem('cropguardian_farmer_profile', JSON.stringify(farmerProfile));
+    localStorage.setItem('krushigan_farmer_profile', JSON.stringify(farmerProfile));
   }, [farmerProfile]);
 
   const login = (role: UserRole) => {

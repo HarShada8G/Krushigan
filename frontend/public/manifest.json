@@ -1,7 +1,7 @@
 {
-  "name": "CropGuardian | AI Crop Health & Early Warning",
-  "short_name": "CropGuardian",
-  "description": "AI-Powered Crop Disease Detection and Early Warning Platform for Maharashtra Farmers",
+  "name": "Krushigan | AI Crop Health & Early Warning",
+  "short_name": "Krushigan",
+  "description": "Krushigan (कृषिगण) — AI-Powered Crop Disease Detection and Early Warning Platform for Maharashtra Farmers",
   "start_url": "/farmer/dashboard",
   "display": "standalone",
   "background_color": "#F8F7F0",

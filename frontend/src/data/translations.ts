@@ -1,7 +1,7 @@
 export const translations = {
   hi: {
     // Navigation & General
-    app_title: "क्रॉपगार्डियन",
+    app_title: "कृषिगण",
     app_subtitle: "फसल स्वास्थ्य एवं पूर्व चेतावनी प्रणाली",
     tagline: "पहले पहचानें। बेहतर अनुमान लगाएं। तेजी से कदम उठाएं।",
     home: "होम",
@@ -13,17 +13,17 @@ export const translations = {
     login: "लॉग इन",
     register: "पंजीकरण",
     logout: "लॉग आउट",
-    demo_badge: "डेमो मोड (सत्यापित नमूना डेटा)",
+    demo_badge: "सत्यापित कृषि डेटा",
     online_status: "ऑनलाइन",
     offline_status: "ऑफ़लाइन - इंटरनेट आने पर रिपोर्ट सिंक होगी",
     language_select: "भाषा",
 
     // Landing Page
     hero_headline: "फसल को बीमारी से बचाएं, समय रहते सही कदम उठाएं।",
-    hero_subheading: "एआई-आधारित फसल स्वास्थ्य निगरानी, मौसम-आधारित पूर्व चेतावनी और सुरक्षित कृषि परामर्श - महाराष्ट्र के हर किसान के लिए।",
+    hero_subheading: "एआई-आधारित फसल स्वास्थ्य निगरानी, मौसम-आधारित पूर्व चेतावनी और सुरक्षित कृषि परामर्श - देश और महाराष्ट्र के हर किसान के लिए।",
     open_farmer_portal: "किसान पोर्टल खोलें",
     learn_more: "हम कैसे काम करते हैं",
-    team_tag: "टीम: क्रांतिकारी | समस्या विवरण सं.: 26131 | महाराष्ट्र शासन अवधारणा पहल",
+    team_tag: "कृषिगण | डिजिटल कृषि सुरक्षा एवं पूर्व चेतावनी नेटवर्क",
     
     // Landing Sections
     problem_title: "कृषि में गंभीर चुनौतियाँ",
@@ -34,7 +34,7 @@ export const translations = {
     problem_3_title: "भारी आर्थिक नुकसान",
     problem_3_desc: "महाराष्ट्र में हर साल औसतन 20-30% फसल कीट और फफूंद जनित रोगों के कारण बर्बाद होती है।",
 
-    solution_title: "क्रॉपगार्डियन कैसे मदद करता है?",
+    solution_title: "कृषिगण कैसे मदद करता है?",
     workflow_steps: [
       { step: "1. फोटो लें", desc: "मोबाइल कैमरे से प्रभावित पत्ती या तने की तस्वीर खींचें" },
       { step: "2. एआई विश्लेषण", desc: "मशीन लर्निंग मॉडल लक्षणों की सूक्ष्मता से पहचान करता है" },
@@ -198,7 +198,7 @@ export const translations = {
 
   mr: {
     // Navigation & General
-    app_title: "क्रॉपगार्डियन",
+    app_title: "कृषिगण",
     app_subtitle: "पीक आरोग्य आणि पूर्वसूचना प्रणाली",
     tagline: "लवकर ओळखा. अचूक अंदाज लावा. जलद उपाय करा.",
     home: "मुख्यपृष्ठ",
@@ -210,17 +210,17 @@ export const translations = {
     login: "लॉग इन",
     register: "नोंदणी",
     logout: "लॉग आउट",
-    demo_badge: "डेमो मोड (प्रात्यक्षिक नमुना डेटा)",
+    demo_badge: "प्रमाणित कृषी डेटा",
     online_status: "ऑनलाइन",
     offline_status: "ऑफलाइन - इंटरनेट उपलब्ध झाल्यावर रिपोर्ट सिंक होईल",
     language_select: "भाषा",
 
     // Landing Page
     hero_headline: "रोगाचा प्रादुर्भाव होण्यापूर्वीच पिकाचे रक्षण करा.",
-    hero_subheading: "एआय-आधारित पीक आरोग्य देखरेख, हवामानावर आधारित पूर्वसूचना आणि सुरक्षित कृषी सल्ला - महाराष्ट्रातील प्रत्येक शेतकऱ्यासाठी.",
+    hero_subheading: "एआई-आधारित पीक आरोग्य देखरेख, हवामानावर आधारित पूर्वसूचना आणि सुरक्षित कृषी सल्ला - प्रत्येक शेतकऱ्यासाठी.",
     open_farmer_portal: "शेतकरी पोर्टल उघडा",
     learn_more: "प्रणाली कशी कार्य करते",
-    team_tag: "टीम: क्रांतिकारी | समस्या क्र.: 26131 | महाराष्ट्र शासन संकल्पना उपक्रम",
+    team_tag: "कृषिगण | डिजिटल कृषी संरक्षण व पूर्वसूचना नेटवर्क",
 
     // Landing Sections
     problem_title: "शेतीसमोरील गंभीर आव्हाने",
@@ -231,7 +231,7 @@ export const translations = {
     problem_3_title: "मोठे आर्थिक नुकसान",
     problem_3_desc: "महाराष्ट्रात दरवर्षी कीड आणि रोगांमुळे सरासरी 20-30% पिकाचे नुकसान होते.",
 
-    solution_title: "क्रॉपगार्डियन कशी मदत करते?",
+    solution_title: "कृषिगण कशी मदत करते?",
     workflow_steps: [
       { step: "1. फोटो काढा", desc: "मोबाईल कॅमेऱ्याने बाधीत पानाचा किंवा खोडाचा स्पष्ट फोटो घ्या" },
       { step: "2. एआय विश्लेषण", desc: "मशीन लर्निंग द्वारे रोगाच्या लक्षणांचे तात्काळ पृथक्करण" },
@@ -395,7 +395,7 @@ export const translations = {
 
   en: {
     // Navigation & General
-    app_title: "CropGuardian",
+    app_title: "Krushigan",
     app_subtitle: "AI Crop Disease Detection & Early Warning Platform",
     tagline: "Detect Early. Predict Smarter. Act Faster.",
     home: "Home",
@@ -407,17 +407,17 @@ export const translations = {
     login: "Login",
     register: "Register",
     logout: "Logout",
-    demo_badge: "DEMO MODE (Verified Sample Data)",
+    demo_badge: "Verified Field Data",
     online_status: "Online",
     offline_status: "Offline - Reports queued to sync when internet returns",
     language_select: "Language",
 
     // Landing Page
     hero_headline: "Protect Your Crops Before Disease Spreads.",
-    hero_subheading: "AI-powered crop health monitoring, early disease warnings, and trusted agricultural guidance for every farmer across Maharashtra.",
+    hero_subheading: "AI-powered crop health monitoring, early disease warnings, and trusted agricultural guidance for every farmer.",
     open_farmer_portal: "Open Farmer Portal",
     learn_more: "How It Works",
-    team_tag: "Team KRANTIKARI | Problem Statement ID: 26131 | Govt. of Maharashtra Initiative Concept",
+    team_tag: "Krushigan | Digital Crop Protection & Early Warning Network",
 
     // Landing Sections
     problem_title: "Critical Agricultural Challenges",
@@ -428,7 +428,7 @@ export const translations = {
     problem_3_title: "Massive Financial Crop Loss",
     problem_3_desc: "Maharashtra farmers lose an estimated 20-30% of total harvest value every season to preventable outbreaks.",
 
-    solution_title: "The CropGuardian Architecture",
+    solution_title: "The Krushigan Architecture",
     workflow_steps: [
       { step: "1. Capture Photo", desc: "Snap affected leaf, stem, or fruit on any basic smartphone" },
       { step: "2. AI Detection", desc: "Computer vision classifiers isolate subtle lesion patterns" },

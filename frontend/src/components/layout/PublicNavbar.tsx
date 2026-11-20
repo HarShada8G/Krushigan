@@ -24,9 +24,9 @@ export const PublicNavbar: React.FC = () => {
             </div>
             <div>
               <div className="flex items-center space-x-1.5">
-                <span className="font-extrabold text-xl tracking-tight text-white">CropGuardian</span>
+                <span className="font-extrabold text-xl tracking-tight text-white">Krushigan</span>
                 <span className="text-[10px] bg-emerald-700/60 text-emerald-200 px-1.5 py-0.5 rounded font-mono">
-                  MH-GOV
+                  कृषिगण
                 </span>
               </div>
               <p className="text-[11px] text-emerald-200/90 font-medium hidden sm:block">

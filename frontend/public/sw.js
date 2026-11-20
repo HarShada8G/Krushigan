@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cropguardian-v1';
+const CACHE_NAME = 'krushigan-v1';
 const STATIC_ASSETS = [
   '/',
   '/index.html',

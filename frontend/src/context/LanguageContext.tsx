@@ -12,13 +12,13 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>(() => {
-    const saved = localStorage.getItem('cropguardian_lang');
+    const saved = localStorage.getItem('krushigan_lang');
     return (saved === 'hi' || saved === 'mr' || saved === 'en') ? saved : 'hi';
   });
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    localStorage.setItem('cropguardian_lang', lang);
+    localStorage.setItem('krushigan_lang', lang);
     document.documentElement.lang = lang;
   };
 

@@ -22,7 +22,7 @@ export const FarmerHeader: React.FC = () => {
               <Sprout size={20} className="text-emerald-300" />
             </div>
             <div>
-              <h1 className="font-extrabold text-base tracking-tight leading-tight">CropGuardian</h1>
+              <h1 className="font-extrabold text-base tracking-tight leading-tight">Krushigan</h1>
               <span className="text-[10px] text-emerald-200 block">
                 {t('farmer_portal')}
               </span>

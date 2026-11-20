@@ -48,10 +48,10 @@ export const LoginPage: React.FC = () => {
               <Sprout size={28} className="text-emerald-300" />
             </div>
             <h1 className="text-2xl font-extrabold text-[#164B35]">
-              {selectedRole === 'farmer' ? "किसान लॉगिन (Farmer Portal)" : "अधिकारी लॉगिन (Officer Portal)"}
+              {selectedRole === 'farmer' ? "à¤•à¤¿à¤¸à¤¾à¤¨ à¤²à¥‰à¤—à¤¿à¤¨ (Farmer Portal)" : "à¤…à¤§à¤¿à¤•à¤¾à¤°à¥€ à¤²à¥‰à¤—à¤¿à¤¨ (Officer Portal)"}
             </h1>
             <p className="text-xs text-[#5F6F65]">
-              क्रॉपगार्डियन सुरक्षित कृषि निगरानी मंच में आपका स्वागत है।
+              à¤•à¥à¤°à¥‰à¤ªà¤—à¤¾à¤°à¥à¤¡à¤¿à¤¯à¤¨ à¤¸à¥à¤°à¤•à¥à¤·à¤¿à¤¤ à¤•à¥ƒà¤·à¤¿ à¤¨à¤¿à¤—à¤°à¤¾à¤¨à¥€ à¤®à¤‚à¤š à¤®à¥‡à¤‚ à¤†à¤ªà¤•à¤¾ à¤¸à¥à¤µà¤¾à¤—à¤¤ à¤¹à¥ˆà¥¤
             </p>
           </div>
 
@@ -69,7 +69,7 @@ export const LoginPage: React.FC = () => {
                   : 'text-[#5F6F65] hover:text-[#164B35]'
               }`}
             >
-              🌱 किसान (Farmer)
+              ðŸŒ± à¤•à¤¿à¤¸à¤¾à¤¨ (Farmer)
             </button>
             <button
               type="button"
@@ -83,7 +83,7 @@ export const LoginPage: React.FC = () => {
                   : 'text-[#5F6F65] hover:text-[#164B35]'
               }`}
             >
-              🛡️ अधिकारी (Officer)
+              ðŸ›¡ï¸ à¤…à¤§à¤¿à¤•à¤¾à¤°à¥€ (Officer)
             </button>
           </div>
 
@@ -91,13 +91,13 @@ export const LoginPage: React.FC = () => {
           <form onSubmit={handleLoginSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-[#202D25] mb-1.5">
-                {selectedRole === 'farmer' ? "मोबाइल नंबर (Phone Number)" : "अधिकारी ईमेल / मोबाइल"}
+                {selectedRole === 'farmer' ? "à¤®à¥‹à¤¬à¤¾à¤‡à¤² à¤¨à¤‚à¤¬à¤° (Phone Number)" : "à¤…à¤§à¤¿à¤•à¤¾à¤°à¥€ à¤ˆà¤®à¥‡à¤² / à¤®à¥‹à¤¬à¤¾à¤‡à¤²"}
               </label>
               <input
                 type="text"
                 value={phone}
                 onChange={e => setPhone(e.target.value)}
-                placeholder="उदा. 98223 45678"
+                placeholder="à¤‰à¤¦à¤¾. 98223 45678"
                 className="w-full px-4 py-3 rounded-xl border border-[#DDE7DF] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#287A50]"
                 required
               />
@@ -105,7 +105,7 @@ export const LoginPage: React.FC = () => {
 
             <div>
               <label className="block text-xs font-bold text-[#202D25] mb-1.5">
-                पासवर्ड या ओटीपी (Password / OTP)
+                à¤ªà¤¾à¤¸à¤µà¤°à¥à¤¡ à¤¯à¤¾ à¤“à¤Ÿà¥€à¤ªà¥€ (Password / OTP)
               </label>
               <input
                 type="password"
@@ -113,7 +113,7 @@ export const LoginPage: React.FC = () => {
                 className="w-full px-4 py-3 rounded-xl border border-[#DDE7DF] text-sm focus:outline-none focus:ring-2 focus:ring-[#287A50]"
               />
               <span className="text-[10px] text-[#5F6F65] mt-1 block">
-                डेमो के लिए कोई भी पासवर्ड मान्य है।
+                à¤¡à¥‡à¤®à¥‹ à¤•à¥‡ à¤²à¤¿à¤ à¤•à¥‹à¤ˆ à¤­à¥€ à¤ªà¤¾à¤¸à¤µà¤°à¥à¤¡ à¤®à¤¾à¤¨à¥à¤¯ à¤¹à¥ˆà¥¤
               </span>
             </div>
 
@@ -121,7 +121,7 @@ export const LoginPage: React.FC = () => {
               type="submit"
               className="w-full bg-[#164B35] hover:bg-[#287A50] text-white font-bold py-3.5 rounded-2xl shadow-touch transition-all flex items-center justify-center space-x-2"
             >
-              <span>पोर्टल में प्रवेश करें</span>
+              <span>à¤ªà¥‹à¤°à¥à¤Ÿà¤² à¤®à¥‡à¤‚ à¤ªà¥à¤°à¤µà¥‡à¤¶ à¤•à¤°à¥‡à¤‚</span>
               <ArrowRight size={16} />
             </button>
           </form>
@@ -130,7 +130,7 @@ export const LoginPage: React.FC = () => {
           <div className="bg-[#EAF4E9] rounded-2xl p-4 border border-[#287A50]/20 space-y-2.5">
             <div className="flex items-center space-x-1.5 text-xs font-bold text-[#164B35]">
               <Sparkles size={14} className="text-[#287A50]" />
-              <span>जज व परीक्षक त्वरित लॉगिन (1-Click Demo Access):</span>
+              <span>à¤œà¤œ à¤µ à¤ªà¤°à¥€à¤•à¥à¤·à¤• à¤¤à¥à¤µà¤°à¤¿à¤¤ à¤²à¥‰à¤—à¤¿à¤¨ (1-Click Demo Access):</span>
             </div>
             <div className="grid grid-cols-1 gap-1.5">
               <button
@@ -138,31 +138,31 @@ export const LoginPage: React.FC = () => {
                 onClick={() => handleQuickDemoLogin('farmer')}
                 className="w-full bg-white text-[#164B35] border border-[#287A50]/30 hover:bg-emerald-50 text-xs font-bold py-2 px-3 rounded-xl text-left flex items-center justify-between"
               >
-                <span>🌱 किसान: रमेश पाटील (अकोला)</span>
-                <span className="text-[10px] text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">लॉगिन</span>
+                <span>ðŸŒ± à¤•à¤¿à¤¸à¤¾à¤¨: à¤°à¤®à¥‡à¤¶ à¤ªà¤¾à¤Ÿà¥€à¤² (à¤…à¤•à¥‹à¤²à¤¾)</span>
+                <span className="text-[10px] text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">à¤²à¥‰à¤—à¤¿à¤¨</span>
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickDemoLogin('officer')}
                 className="w-full bg-white text-[#164B35] border border-[#287A50]/30 hover:bg-emerald-50 text-xs font-bold py-2 px-3 rounded-xl text-left flex items-center justify-between"
               >
-                <span>🛡️ अधिकारी: डॉ. सुनीता देशमुख (DAO)</span>
-                <span className="text-[10px] text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">लॉगिन</span>
+                <span>ðŸ›¡ï¸ à¤…à¤§à¤¿à¤•à¤¾à¤°à¥€: à¤¡à¥‰. à¤¸à¥à¤¨à¥€à¤¤à¤¾ à¤¦à¥‡à¤¶à¤®à¥à¤– (DAO)</span>
+                <span className="text-[10px] text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">à¤²à¥‰à¤—à¤¿à¤¨</span>
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickDemoLogin('expert')}
                 className="w-full bg-white text-[#164B35] border border-[#287A50]/30 hover:bg-emerald-50 text-xs font-bold py-2 px-3 rounded-xl text-left flex items-center justify-between"
               >
-                <span>🔬 विशेषज्ञ: डॉ. विनायक शिंदे (KVK)</span>
-                <span className="text-[10px] text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">लॉगिन</span>
+                <span>ðŸ”¬ à¤µà¤¿à¤¶à¥‡à¤·à¤œà¥à¤ž: à¤¡à¥‰. à¤µà¤¿à¤¨à¤¾à¤¯à¤• à¤¶à¤¿à¤‚à¤¦à¥‡ (KVK)</span>
+                <span className="text-[10px] text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">à¤²à¥‰à¤—à¤¿à¤¨</span>
               </button>
             </div>
           </div>
 
           <div className="text-center pt-2">
             <Link to="/register" className="text-xs text-[#287A50] font-semibold hover:underline">
-              नया किसान खाता बनाएं (Register New Farmer)
+              à¤¨à¤¯à¤¾ à¤•à¤¿à¤¸à¤¾à¤¨ à¤–à¤¾à¤¤à¤¾ à¤¬à¤¨à¤¾à¤à¤‚ (Register New Farmer)
             </Link>
           </div>
         </div>

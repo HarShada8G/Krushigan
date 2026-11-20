@@ -28,7 +28,7 @@ export const OfficerHeader: React.FC = () => {
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <span className="font-extrabold text-lg tracking-tight">CropGuardian</span>
+              <span className="font-extrabold text-lg tracking-tight">Krushigan</span>
               <span className="text-[11px] bg-amber-400/20 text-amber-200 border border-amber-400/40 px-2 py-0.5 rounded-full font-semibold">
                 Maharashtra Surveillance Portal
               </span>

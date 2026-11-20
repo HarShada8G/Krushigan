@@ -37,7 +37,7 @@ export const LandingPage: React.FC = () => {
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
             <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/20 text-xs font-semibold text-emerald-200">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-              <span>महाराष्ट्र शासन संकल्पना उपक्रम | Problem ID: 26131</span>
+              <span>राष्ट्रीय कृषि सुरक्षा एवं रोग पूर्व चेतावनी नेटवर्क</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight sm:leading-tight">
@@ -94,7 +94,7 @@ export const LandingPage: React.FC = () => {
                 <div className="flex items-center justify-between border-b border-[#DDE7DF] pb-2">
                   <div className="flex items-center space-x-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                    <span className="text-xs font-bold text-[#164B35]">CropGuardian Mobile</span>
+                    <span className="text-xs font-bold text-[#164B35]">Krushigan Mobile</span>
                   </div>
                   <span className="text-[10px] text-gray-500">अकोला, महाराष्ट्र</span>
                 </div>
@@ -294,9 +294,9 @@ export const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-white/10 text-xs text-white/80">
           <div className="md:col-span-2 space-y-3">
             <div className="flex items-center space-x-2">
-              <span className="font-black text-xl text-white">CropGuardian</span>
+              <span className="font-black text-xl text-white">Krushigan</span>
               <span className="bg-emerald-700 text-emerald-200 text-[10px] px-2 py-0.5 rounded font-mono">
-                SIH-26131
+                AGRI-CARE
               </span>
             </div>
             <p className="text-emerald-100/90 leading-relaxed max-w-md">
@@ -305,7 +305,7 @@ export const LandingPage: React.FC = () => {
               फसल को बीमारी से बचाएं, समय रहते सही कदम उठाएं।
             </p>
             <p className="text-amber-300 font-semibold text-[11px]">
-              टीम: क्रांतिकारी (KRANTIKARI) | Catalyst Hackathon / Smart India Hackathon
+              सच्ची कृषि समस्याओं का व्यावहारिक समाधान | AI-Driven Crop Diagnostics & Farmer Advisory
             </p>
           </div>
 
@@ -320,16 +320,16 @@ export const LandingPage: React.FC = () => {
           </div>
 
           <div>
-            <h4 className="font-bold text-white text-sm mb-3">सत्यनिष्ठा व अस्वीकरण</h4>
+            <h4 className="font-bold text-white text-sm mb-3">हमारा संकल्प</h4>
             <p className="text-[11px] leading-relaxed text-emerald-200/80">
-              यह प्रणाली स्मार्ट इंडिया हैकाथॉन (SIH) समस्या विवरण 26131 के अंतर्गत विकसित एक संकल्पनात्मक प्रोटोटाइप है। यह अधिकृत सरकारी प्रमाणीकरण का दावा नहीं करता है।
+              कृषिगण मंच किसानों को समय रहते फसल रोगों से बचाने और कृषि वैज्ञानिकों के प्रमाणित मार्गदर्शन को हर किसान तक सुलभ बनाने के लिए समर्पित एक स्वतंत्र कृषि प्रौद्योगिकी समाधान है।
             </p>
           </div>
         </div>
 
         <div className="max-w-7xl mx-auto pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-white/60">
-          <p>© 2026 CropGuardian Platform. Team KRANTIKARI. All rights reserved.</p>
-          <p className="mt-2 sm:mt-0">Designed for Maharashtra Agriculture Department Initiative Concept.</p>
+          <p>© 2026 Krushigan Platform. Dedicated to Empowering Farmers. All rights reserved.</p>
+          <p className="mt-2 sm:mt-0">Designed for Practical Agricultural Disease Prevention and Management.</p>
         </div>
       </footer>
     </div>

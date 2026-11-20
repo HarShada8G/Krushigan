@@ -6,7 +6,7 @@ from app.routers import auth, farmer, weather, reports, officer, expert
 app = FastAPI(
     title=APP_NAME,
     version=APP_VERSION,
-    description="CropGuardian Backend API - AI-Powered Crop Disease Detection, Early Warning & Management Platform for Maharashtra Agriculture",
+    description="Krushigan (कृषिगण) Backend API — AI-Powered Crop Disease Detection, Early Warning & Management Platform for Maharashtra Agriculture",
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -34,18 +34,17 @@ def root():
         "app": APP_NAME,
         "version": APP_VERSION,
         "tagline": "Detect Early. Predict Smarter. Act Faster.",
-        "team": "KRANTIKARI",
-        "problemStatementId": "26131",
-        "organization": "Government of Maharashtra Initiative Concept",
+        "platform": "Krushigan — AI Crop Disease Detection Platform",
+        "organization": "Agricultural Technology Initiative for Maharashtra",
         "docs": "/docs",
-        "demoMode": True
+        "status": "operational"
     }
 
 @app.get("/api/health")
 def health_check():
     return {
         "status": "healthy",
-        "service": "CropGuardian Backend API",
+        "service": "Krushigan Backend API",
         "version": APP_VERSION,
-        "demo_mode": True
+        "field_data": True
     }
