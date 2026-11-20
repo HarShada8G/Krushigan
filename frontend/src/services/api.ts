@@ -17,7 +17,7 @@ import {
 import { MAHARASHTRA_DISTRICT_HOTSPOTS } from '../data/maharashtraGeo';
 import { CROP_DISEASES } from '../data/cropDiseases';
 
-const API_BASE = '/api';
+const API_BASE = (import.meta.env.VITE_API_URL as string || '/api').replace(/\/$/, '');
 
 // Helper to check if backend is reachable
 let isBackendLive: boolean | null = null;
