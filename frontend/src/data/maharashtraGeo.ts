@@ -1,0 +1,130 @@
+import { MaharashtraDistrictHotspot } from '../types';
+
+export const MAHARASHTRA_DISTRICT_HOTSPOTS: MaharashtraDistrictHotspot[] = [
+  {
+    district: "Akola",
+    marathiName: "अकोला",
+    lat: 20.7002,
+    lng: 77.0082,
+    riskLevel: "high",
+    activeReportsCount: 84,
+    confirmedCasesCount: 52,
+    primaryCrop: "Tomato",
+    prevalentDisease: "Early Blight (Alternaria)",
+    recentWeather: "High Humidity (82%), Rain 18mm",
+    trend: "increasing",
+    talukasHighRisk: ["Akot", "Telhara", "Balapur"],
+    isDemoData: true
+  },
+  {
+    district: "Amravati",
+    marathiName: "अमरावती",
+    lat: 20.9374,
+    lng: 77.7796,
+    riskLevel: "medium",
+    activeReportsCount: 62,
+    confirmedCasesCount: 38,
+    primaryCrop: "Cotton",
+    prevalentDisease: "Cotton Aphids & Bollworm",
+    recentWeather: "Warm 31°C, Humidity 68%",
+    trend: "stable",
+    talukasHighRisk: ["Achalpur", "Morshi", "Warud"],
+    isDemoData: true
+  },
+  {
+    district: "Nagpur",
+    marathiName: "नागपूर",
+    lat: 21.1458,
+    lng: 79.0882,
+    riskLevel: "medium",
+    activeReportsCount: 45,
+    confirmedCasesCount: 29,
+    primaryCrop: "Soybean",
+    prevalentDisease: "Yellow Mosaic & Stem Fly",
+    recentWeather: "Partly Cloudy, 30°C",
+    trend: "decreasing",
+    talukasHighRisk: ["Katol", "Saoner", "Umred"],
+    isDemoData: true
+  },
+  {
+    district: "Nashik",
+    marathiName: "नाशिक",
+    lat: 19.9975,
+    lng: 73.7898,
+    riskLevel: "severe",
+    activeReportsCount: 118,
+    confirmedCasesCount: 89,
+    primaryCrop: "Onion / Tomato",
+    prevalentDisease: "Purple Blotch & Downy Mildew",
+    recentWeather: "Overcast, High Moisture 88%",
+    trend: "increasing",
+    talukasHighRisk: ["Niphad", "Yeola", "Dindori", "Sinnar"],
+    isDemoData: true
+  },
+  {
+    district: "Pune",
+    marathiName: "पुणे",
+    lat: 18.5204,
+    lng: 73.8567,
+    riskLevel: "low",
+    activeReportsCount: 31,
+    confirmedCasesCount: 14,
+    primaryCrop: "Sugarcane / Vegetables",
+    prevalentDisease: "Early Shoot Borer",
+    recentWeather: "Pleasant 27°C, Humidity 62%",
+    trend: "stable",
+    talukasHighRisk: ["Junnar", "Shirur", "Baramati"],
+    isDemoData: true
+  },
+  {
+    district: "Chhatrapati Sambhajinagar",
+    marathiName: "छत्रपती संभाजीनगर",
+    lat: 19.8762,
+    lng: 75.3433,
+    riskLevel: "high",
+    activeReportsCount: 76,
+    confirmedCasesCount: 49,
+    primaryCrop: "Cotton / Maize",
+    prevalentDisease: "Fall Armyworm & Pink Bollworm",
+    recentWeather: "Dry Heat 33°C, Gusty Winds",
+    trend: "increasing",
+    talukasHighRisk: ["Gangapur", "Paithan", "Vaijapur"],
+    isDemoData: true
+  },
+  {
+    district: "Jalgaon",
+    marathiName: "जळगाव",
+    lat: 21.0077,
+    lng: 75.5626,
+    riskLevel: "medium",
+    activeReportsCount: 58,
+    confirmedCasesCount: 34,
+    primaryCrop: "Banana / Cotton",
+    prevalentDisease: "Sigatoka Leaf Spot",
+    recentWeather: "Hot 34°C, Humidity 55%",
+    trend: "decreasing",
+    talukasHighRisk: ["Raver", "Yawal", "Chopda"],
+    isDemoData: true
+  },
+  {
+    district: "Solapur",
+    marathiName: "सोलापूर",
+    lat: 17.6599,
+    lng: 75.9064,
+    riskLevel: "low",
+    activeReportsCount: 24,
+    confirmedCasesCount: 11,
+    primaryCrop: "Pomegranate",
+    prevalentDisease: "Bacterial Blight (Telya)",
+    recentWeather: "Clear Sunny 33°C, Dry",
+    trend: "stable",
+    talukasHighRisk: ["Pandharpur", "Sangola"],
+    isDemoData: true
+  }
+];
+
+export const MAHARASHTRA_CENTER = {
+  lat: 19.7515,
+  lng: 75.7139,
+  zoom: 7
+};
