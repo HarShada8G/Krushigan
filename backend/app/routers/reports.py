@@ -27,7 +27,7 @@ STORED_REPORTS: List[CropReportSchema] = [
         crop="Tomato",
         variety="Abhinav",
         growthStage="Flowering",
-        imageUrl="https://images.unsplash.com/photo-1592417817098-8f3d6eb22509?auto=format&fit=crop&w=800&q=80",
+        imageUrl="/images/crops/tomato_early_blight.jpg",
         timestamp="2026-11-18 10:30 AM",
         status="expert_confirmed",
         diagnosis=DiagnosisResultSchema(
@@ -85,7 +85,7 @@ STORED_REPORTS: List[CropReportSchema] = [
         crop="Tomato",
         variety="Vaibhav",
         growthStage="Fruiting",
-        imageUrl="https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&w=800&q=80",
+        imageUrl="/images/crops/tomato_leaf_curl.jpg",
         timestamp="2026-11-19 03:15 PM",
         status="pending",
         diagnosis=DiagnosisResultSchema(
@@ -120,6 +120,62 @@ STORED_REPORTS: List[CropReportSchema] = [
                 )
             ),
             environmentalRiskCorrelation="शुष्क गर्म हवा से कीट प्रकोप बढ़ा",
+            isSimulatedDemo=True
+        )
+    ),
+    CropReportSchema(
+        id="REP-2026-NSK-003",
+        farmerId="farmer_03",
+        farmerName="Balasaheb Shinde (बाळासाहेब शिंदे)",
+        phone="+91 94231 99887",
+        district="Nashik",
+        taluka="Niphad",
+        village="Pimpalgaon Baswant",
+        crop="Onion",
+        variety="Gavran (लाल कांदा)",
+        growthStage="Vegetative",
+        imageUrl="/images/crops/onion_purple_blotch.jpg",
+        timestamp="2026-11-20 09:10 AM",
+        status="pending",
+        diagnosis=DiagnosisResultSchema(
+            id="diag_003",
+            reportId="REP-2026-NSK-003",
+            crop="Onion",
+            detectedProblem="Purple Blotch (Alternaria porri)",
+            hindiName="बैंगनी धब्बा रोग (पर्पल ब्लॉच)",
+            marathiName="कांद्यावरील जांभळा करपा",
+            confidenceScore=0.91,
+            severity="severe",
+            symptoms=[
+                "कांदे के पत्तों पर पानी से भीगे छोटे धब्बे जो बाद में बैंगनी-भूरे हो जाते हैं",
+                "पत्तियां बीच से टूटकर लटक जाना"
+            ],
+            recommendations=RecommendationsSchema(
+                green=GreenTier(
+                    title="🟢 पहले यह करें",
+                    items=[
+                        "खेत में पानी का निकास सुधारें, जलभराव न रहने दें।",
+                        "नत्र (यूरिया) का असंतुलित उपयोग तत्काल रोकें।"
+                    ]
+                ),
+                yellow=YellowTier(
+                    title="🟡 जरूरत पड़ने पर",
+                    items=["ट्राइकोडर्मा विरिडी 5 ग्राम प्रति लीटर पानी में मिलाकर छिड़कें।"],
+                    bioAgent="Trichoderma viride"
+                ),
+                red=RedTier(
+                    title="🔴 विशेषज्ञ की सलाह से",
+                    isCertified=True,
+                    activeIngredient="Difenoconazole 25% EC",
+                    targetProblem="Alternaria porri (Purple Blotch)",
+                    authoritySource="Directorate of Onion and Garlic Research (DOGR), Rajgurunagar",
+                    applicationInstructions="डाइफेनोकोनाजोल 1 मिली + स्टिकर 0.5 मिली प्रति लीटर पानी में मिलाकर छिड़काव करें।",
+                    safetyPrecautions=["छिड़काव के समय आंख और त्वचा के संपर्क से बचें।"],
+                    preHarvestInterval="15 दिन",
+                    disclaimer="कृषि अधिकारी की सलाह पर ही रासायनिक कीटनाशक का प्रयोग करें।"
+                )
+            ),
+            environmentalRiskCorrelation="नासिक में 88% आर्द्रता और बादल छाए रहने से फफूंद प्रसार चरम पर",
             isSimulatedDemo=True
         )
     )

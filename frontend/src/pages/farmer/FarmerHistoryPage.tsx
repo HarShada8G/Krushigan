@@ -124,6 +124,12 @@ export const FarmerHistoryPage: React.FC = () => {
                     <img
                       src={report.imageUrl}
                       alt={report.crop}
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (target.src !== '/images/crops/crop_fallback.svg') {
+                          target.src = '/images/crops/crop_fallback.svg';
+                        }
+                      }}
                       className="w-full h-full object-cover"
                     />
                   </div>

@@ -27,7 +27,7 @@ export const OfficerAlertsPage: React.FC = () => {
   const [diseaseOrPest, setDiseaseOrPest] = useState('Early Blight (Alternaria)');
   const [riskLevel, setRiskLevel] = useState<'low' | 'medium' | 'high' | 'severe'>('high');
   const [message, setMessage] = useState(
-    "à¤Ÿà¤®à¤¾à¤Ÿà¤° à¤•à¤¿à¤¸à¤¾à¤¨à¥‹à¤‚ à¤•à¥‡ à¤²à¤¿à¤ à¤®à¤¹à¤¤à¥à¤µà¤ªà¥‚à¤°à¥à¤£ à¤¸à¥‚à¤šà¤¨à¤¾: à¤†à¤ªà¤•à¥‡ à¤•à¥à¤·à¥‡à¤¤à¥à¤° à¤®à¥‡à¤‚ à¤†à¤°à¥à¤¦à¥à¤°à¤¤à¤¾ 80% à¤ªà¤¾à¤° à¤•à¤° à¤—à¤ˆ à¤¹à¥ˆ à¤”à¤° à¤…à¤°à¥à¤²à¥€ à¤¬à¥à¤²à¤¾à¤‡à¤Ÿ à¤°à¥‹à¤— à¤•à¤¾ à¤–à¤¤à¤°à¤¾ à¤¬à¤¢à¤¼ à¤°à¤¹à¤¾ à¤¹à¥ˆà¥¤ à¤•à¥ƒà¤ªà¤¯à¤¾ à¤†à¤œ à¤…à¤ªà¤¨à¥€ à¤«à¤¸à¤² à¤•à¥‡ à¤¨à¤¿à¤šà¤²à¥‡ à¤ªà¤¤à¥à¤¤à¥‹à¤‚ à¤•à¥€ à¤œà¤¾à¤‚à¤š à¤•à¤°à¥‡à¤‚ à¤à¤µà¤‚ à¤œà¤²à¤­à¤°à¤¾à¤µ à¤¨ à¤¹à¥‹à¤¨à¥‡ à¤¦à¥‡à¤‚à¥¤"
+    "टमाटर किसानों के लिए महत्वपूर्ण सूचना: आपके क्षेत्र में आर्द्रता 80% पार कर गई है और अर्ली ब्लाइट रोग का खतरा बढ़ रहा है। कृपया आज अपनी फसल के निचले पत्तों की जांच करें एवं जलभराव न होने दें।"
   );
 
   const [isSending, setIsSending] = useState(false);
@@ -61,7 +61,7 @@ export const OfficerAlertsPage: React.FC = () => {
       setAlerts(prev => [newAlert, ...prev]);
       setIsSending(false);
       setSuccessBanner(
-        `à¤¸à¤¤à¤°à¥à¤•à¤¤à¤¾ à¤¸à¤‚à¤¦à¥‡à¤¶ à¤¸à¤«à¤²à¤¤à¤¾à¤ªà¥‚à¤°à¥à¤µà¤• ${estimatedFarmerCount} à¤ªà¤‚à¤œà¥€à¤•à¥ƒà¤¤ à¤•à¤¿à¤¸à¤¾à¤¨à¥‹à¤‚ à¤•à¥‹ à¤ªà¥à¤°à¥‡à¤·à¤¿à¤¤ (à¤¸à¤¿à¤®à¥à¤¯à¥à¤²à¥‡à¤Ÿà¥‡à¤¡ SMS à¤—à¥‡à¤Ÿà¤µà¥‡: DEMO MODE)`
+        `सतर्कता संदेश सफलतापूर्वक ${estimatedFarmerCount} पंजीकृत किसानों को प्रेषित (सिम्युलेटेड SMS गेटवे: DEMO MODE)`
       );
       setTimeout(() => setSuccessBanner(null), 5000);
     }, 1200);
@@ -82,22 +82,22 @@ export const OfficerAlertsPage: React.FC = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-2xl font-black text-[#164B35]">
-                à¤¸à¤°à¤•à¤¾à¤°à¥€ à¤…à¤²à¤°à¥à¤Ÿ à¤ªà¥à¤°à¤¸à¤¾à¤°à¤£ à¤•à¥‡à¤‚à¤¦à¥à¤° (Government Alert Broadcast)
+                सरकारी अलर्ट प्रसारण केंद्र (Government Alert Broadcast)
               </h1>
               <p className="text-xs text-[#5F6F65] mt-0.5">
-                à¤¤à¤¹à¤¸à¥€à¤² à¤µ à¤«à¤¸à¤²-à¤µà¤¿à¤¶à¤¿à¤·à¥à¤Ÿ à¤°à¥‹à¤— à¤šà¥‡à¤¤à¤¾à¤µà¤¨à¥€ à¤à¤¸à¤à¤®à¤à¤¸ à¤à¤µà¤‚ à¤®à¥‹à¤¬à¤¾à¤‡à¤² à¤à¤ª à¤…à¤§à¤¿à¤¸à¥‚à¤šà¤¨à¤¾ à¤ªà¥à¤°à¥‡à¤·à¤£
+                तहसील व फसल-विशिष्ट रोग चेतावनी एसएमएस एवं मोबाइल ऐप अधिसूचना प्रेषण
               </p>
             </div>
 
             <div className="flex items-center space-x-1.5 text-xs text-amber-900 bg-amber-100/80 px-3 py-1.5 rounded-2xl border border-amber-300">
               <Sparkles size={14} className="text-amber-700" />
-              <span>SMS à¤à¤•à¥€à¤•à¤°à¤£: <strong>à¤¸à¤¿à¤®à¥à¤¯à¥à¤²à¥‡à¤Ÿà¥‡à¤¡ à¤¡à¥‡à¤®à¥‹ à¤®à¥‹à¤¡</strong></span>
+              <span>SMS एकीकरण: <strong>सिम्युलेटेड डेमो मोड</strong></span>
             </div>
           </div>
 
           {successBanner && (
             <div className="bg-[#329568] text-white p-4 rounded-3xl text-xs font-bold text-center animate-fadeIn shadow-sm">
-              âœ“ {successBanner}
+              ✓ {successBanner}
             </div>
           )}
 
@@ -107,7 +107,7 @@ export const OfficerAlertsPage: React.FC = () => {
             <div className="lg:col-span-7 bg-white rounded-3xl p-6 shadow-card border border-[#DDE7DF] space-y-5">
               <h3 className="font-extrabold text-base text-[#164B35] flex items-center space-x-2">
                 <Radio size={18} className="text-[#287A50]" />
-                <span>à¤¨à¤¯à¤¾ à¤ªà¥‚à¤°à¥à¤µ à¤šà¥‡à¤¤à¤¾à¤µà¤¨à¥€ à¤¸à¤‚à¤¦à¥‡à¤¶ à¤¤à¥ˆà¤¯à¤¾à¤° à¤•à¤°à¥‡à¤‚ (Compose Advisory)</span>
+                <span>नया पूर्व चेतावनी संदेश तैयार करें (Compose Advisory)</span>
               </h3>
 
               <form onSubmit={handleSendBroadcast} className="space-y-4 text-xs">
@@ -115,24 +115,24 @@ export const OfficerAlertsPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block font-bold text-[#202D25] mb-1">
-                      à¤²à¤•à¥à¤·à¤¿à¤¤ à¤œà¤¿à¤²à¤¾ (Target District) *
+                      लक्षित जिला (Target District) *
                     </label>
                     <select
                       value={district}
                       onChange={e => setDistrict(e.target.value)}
                       className="w-full px-3 py-2 rounded-xl border border-[#DDE7DF] font-bold text-[#164B35] focus:ring-2 focus:ring-[#287A50]"
                     >
-                      <option value="Akola">à¤…à¤•à¥‹à¤²à¤¾ (Akola)</option>
-                      <option value="Nashik">à¤¨à¤¾à¤¶à¤¿à¤• (Nashik)</option>
-                      <option value="Amravati">à¤…à¤®à¤°à¤¾à¤µà¤¤à¥€ (Amravati)</option>
-                      <option value="Nagpur">à¤¨à¤¾à¤—à¤ªà¥‚à¤° (Nagpur)</option>
-                      <option value="Pune">à¤ªà¥à¤£à¥‡ (Pune)</option>
+                      <option value="Akola">अकोला (Akola)</option>
+                      <option value="Nashik">नाशिक (Nashik)</option>
+                      <option value="Amravati">अमरावती (Amravati)</option>
+                      <option value="Nagpur">नागपूर (Nagpur)</option>
+                      <option value="Pune">पुणे (Pune)</option>
                     </select>
                   </div>
 
                   <div>
                     <label className="block font-bold text-[#202D25] mb-1">
-                      à¤²à¤•à¥à¤·à¤¿à¤¤ à¤¤à¤¹à¤¸à¥€à¤²à¥‡à¤‚ (Target Talukas) *
+                      लक्षित तहसीलें (Target Talukas) *
                     </label>
                     <input
                       type="text"
@@ -148,23 +148,23 @@ export const OfficerAlertsPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block font-bold text-[#202D25] mb-1">
-                      à¤²à¤•à¥à¤·à¤¿à¤¤ à¤«à¤¸à¤² (Target Crop) *
+                      लक्षित फसल (Target Crop) *
                     </label>
                     <select
                       value={crop}
                       onChange={e => setCrop(e.target.value)}
                       className="w-full px-3 py-2 rounded-xl border border-[#DDE7DF] font-bold text-[#164B35] focus:ring-2 focus:ring-[#287A50]"
                     >
-                      <option value="Tomato">à¤Ÿà¤®à¤¾à¤Ÿà¤° (Tomato)</option>
-                      <option value="Cotton">à¤•à¤ªà¤¾à¤¸ (Cotton)</option>
-                      <option value="Onion">à¤ªà¥à¤¯à¤¾à¤œ (Onion)</option>
-                      <option value="Soybean">à¤¸à¥‹à¤¯à¤¾à¤¬à¥€à¤¨ (Soybean)</option>
+                      <option value="Tomato">टमाटर (Tomato)</option>
+                      <option value="Cotton">कपास (Cotton)</option>
+                      <option value="Onion">प्याज (Onion)</option>
+                      <option value="Soybean">सोयाबीन (Soybean)</option>
                     </select>
                   </div>
 
                   <div>
                     <label className="block font-bold text-[#202D25] mb-1">
-                      à¤°à¥‹à¤— / à¤•à¥€à¤Ÿ (Pathogen / Pest) *
+                      रोग / कीट (Pathogen / Pest) *
                     </label>
                     <input
                       type="text"
@@ -179,7 +179,7 @@ export const OfficerAlertsPage: React.FC = () => {
                 {/* Risk Level radio buttons */}
                 <div>
                   <label className="block font-bold text-[#202D25] mb-1.5">
-                    à¤šà¥‡à¤¤à¤¾à¤µà¤¨à¥€ à¤—à¤‚à¤­à¥€à¤°à¤¤à¤¾ à¤¸à¥à¤¤à¤° (Risk Level):
+                    चेतावनी गंभीरता स्तर (Risk Level):
                   </label>
                   <div className="grid grid-cols-4 gap-2">
                     {(['low', 'medium', 'high', 'severe'] as const).map(lvl => (
@@ -202,7 +202,7 @@ export const OfficerAlertsPage: React.FC = () => {
                 {/* Advisory Message Textarea */}
                 <div>
                   <label className="block font-bold text-[#202D25] mb-1">
-                    à¤¸à¤‚à¤¦à¥‡à¤¶ à¤ªà¥à¤°à¤¾à¤°à¥‚à¤ª (Advisory Message Text):
+                    संदेश प्रारूप (Advisory Message Text):
                   </label>
                   <textarea
                     rows={4}
@@ -212,8 +212,8 @@ export const OfficerAlertsPage: React.FC = () => {
                     required
                   />
                   <div className="flex justify-between text-[11px] text-[#5F6F65] mt-1">
-                    <span>à¤…à¤¨à¥à¤®à¤¾à¤¨à¤¿à¤¤ à¤ªà¥à¤°à¤¾à¤ªà¥à¤¤à¤•à¤°à¥à¤¤à¤¾: <strong>{estimatedFarmerCount} à¤ªà¤‚à¤œà¥€à¤•à¥ƒà¤¤ à¤•à¤¿à¤¸à¤¾à¤¨</strong></span>
-                    <span>{message.length} à¤…à¤•à¥à¤·à¤°</span>
+                    <span>अनुमानित प्राप्तकर्ता: <strong>{estimatedFarmerCount} पंजीकृत किसान</strong></span>
+                    <span>{message.length} अक्षर</span>
                   </div>
                 </div>
 
@@ -223,7 +223,7 @@ export const OfficerAlertsPage: React.FC = () => {
                   className="w-full bg-[#164B35] hover:bg-[#287A50] disabled:opacity-60 text-white font-bold py-3.5 rounded-2xl shadow-touch transition-all flex items-center justify-center space-x-2 text-xs"
                 >
                   <Send size={15} />
-                  <span>{isSending ? "à¤¸à¤‚à¤¦à¥‡à¤¶ à¤­à¥‡à¤œà¤¾ à¤œà¤¾ à¤°à¤¹à¤¾ à¤¹à¥ˆ..." : "à¤…à¤²à¤°à¥à¤Ÿ à¤ªà¥à¤°à¤¸à¤¾à¤°à¤¿à¤¤ à¤•à¤°à¥‡à¤‚ (Simulate SMS Broadcast)"}</span>
+                  <span>{isSending ? "संदेश भेजा जा रहा है..." : "अलर्ट प्रसारित करें (Simulate SMS Broadcast)"}</span>
                 </button>
               </form>
             </div>
@@ -232,7 +232,7 @@ export const OfficerAlertsPage: React.FC = () => {
             <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
               <div className="bg-white rounded-3xl p-6 shadow-card border border-[#DDE7DF] space-y-4">
                 <span className="text-xs font-bold text-[#5F6F65] uppercase block">
-                  à¤®à¥‹à¤¬à¤¾à¤‡à¤² à¤¸à¥à¤•à¥à¤°à¥€à¤¨ à¤ªà¥‚à¤°à¥à¤µà¤¾à¤µà¤²à¥‹à¤•à¤¨ (Farmer SMS / In-App Preview)
+                  मोबाइल स्क्रीन पूर्वावलोकन (Farmer SMS / In-App Preview)
                 </span>
 
                 {/* Realistic Smartphone Frame */}
@@ -244,14 +244,14 @@ export const OfficerAlertsPage: React.FC = () => {
                         <span className="w-2 h-2 rounded-full bg-red-600 animate-ping"></span>
                         <strong className="text-[11px] text-[#164B35]">MH-KRUSHIGAN</strong>
                       </div>
-                      <span className="text-[9px] text-gray-400">à¤…à¤­à¥€ (Just Now)</span>
+                      <span className="text-[9px] text-gray-400">अभी (Just Now)</span>
                     </div>
 
                     {/* Body */}
                     <div className="bg-emerald-50/70 p-3 rounded-xl border border-emerald-200 text-[#202D25] space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-[10px] font-bold text-red-600 uppercase">
-                          ðŸš¨ {riskLevel.toUpperCase()} RISK ALERT
+                          🚨 {riskLevel.toUpperCase()} RISK ALERT
                         </span>
                         <span className="text-[9px] text-[#5F6F65]">{district}</span>
                       </div>
@@ -262,7 +262,7 @@ export const OfficerAlertsPage: React.FC = () => {
 
                     {/* Footer */}
                     <div className="text-[9px] text-gray-500 text-center border-t pt-2">
-                      à¤•à¥ƒà¤·à¤¿ à¤†à¤¯à¥à¤•à¥à¤¤à¤¾à¤²à¤¯, à¤®à¤¹à¤¾à¤°à¤¾à¤·à¥à¤Ÿà¥à¤° à¤¶à¤¾à¤¸à¤¨ | à¤Ÿà¥‹à¤²-à¤«à¥à¤°à¥€: 1800-233-4000
+                      कृषि आयुक्तालय, महाराष्ट्र शासन | टोल-फ्री: 1800-233-4000
                     </div>
                   </div>
                 </div>
@@ -271,7 +271,7 @@ export const OfficerAlertsPage: React.FC = () => {
               {/* Delivery History log */}
               <div className="bg-white rounded-3xl p-5 shadow-card border border-[#DDE7DF] space-y-3">
                 <h4 className="font-bold text-xs text-[#164B35]">
-                  à¤¹à¤¾à¤² à¤¹à¥€ à¤®à¥‡à¤‚ à¤­à¥‡à¤œà¥‡ à¤—à¤ à¤ªà¥à¤°à¤¸à¤¾à¤°à¤£ (Recent Broadcasts)
+                  हाल ही में भेजे गए प्रसारण (Recent Broadcasts)
                 </h4>
                 <div className="space-y-2 max-h-48 overflow-y-auto">
                   {alerts.map(alt => (
@@ -279,7 +279,7 @@ export const OfficerAlertsPage: React.FC = () => {
                       <div className="flex items-center justify-between">
                         <strong className="text-[#164B35]">{alt.title}</strong>
                         <span className="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded">
-                          âœ“ Sent ({alt.targetCount})
+                          ✓ Sent ({alt.targetCount})
                         </span>
                       </div>
                       <p className="text-[11px] text-[#5F6F65] line-clamp-1">{alt.messageHi}</p>

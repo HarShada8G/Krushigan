@@ -19,6 +19,8 @@ import { getFarmerReports, saveCropReport } from '../../services/api';
 import { CropReport } from '../../types';
 import { DEMO_LEARNING_METRICS } from '../../data/demoData';
 
+const FALLBACK_CROP_IMAGE = '/images/crops/crop_fallback.svg';
+
 export const OfficerValidationPage: React.FC = () => {
   const [reports, setReports] = useState<CropReport[]>([]);
   const [activeReport, setActiveReport] = useState<CropReport | null>(null);
@@ -137,6 +139,12 @@ export const OfficerValidationPage: React.FC = () => {
                       <img
                         src={rep.imageUrl}
                         alt="Thumbnail"
+                        onError={(e) => {
+                          const target = e.currentTarget;
+                          if (target.src !== FALLBACK_CROP_IMAGE) {
+                            target.src = FALLBACK_CROP_IMAGE;
+                          }
+                        }}
                         className="w-14 h-14 object-cover rounded-xl shrink-0"
                       />
                       <div className="flex-1 min-w-0 text-xs">
@@ -193,6 +201,12 @@ export const OfficerValidationPage: React.FC = () => {
                     <img
                       src={activeReport.imageUrl}
                       alt="Crop disease lesion"
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        if (target.src !== FALLBACK_CROP_IMAGE) {
+                          target.src = FALLBACK_CROP_IMAGE;
+                        }
+                      }}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-md px-3 py-1 rounded-xl text-white text-[11px] font-mono">

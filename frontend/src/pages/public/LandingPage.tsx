@@ -101,8 +101,14 @@ export const LandingPage: React.FC = () => {
 
                 <div className="relative rounded-xl overflow-hidden aspect-[4/3] bg-emerald-950">
                   <img
-                    src="https://images.unsplash.com/photo-1592417817098-8f3d6eb22509?auto=format&fit=crop&w=600&q=80"
+                    src="/images/crops/tomato_early_blight.jpg"
                     alt="Tomato Leaf Early Blight Lesion"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (target.src !== '/images/crops/crop_fallback.svg') {
+                        target.src = '/images/crops/crop_fallback.svg';
+                      }
+                    }}
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-3 text-white">

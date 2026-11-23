@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%">
+  <rect width="400" height="300" fill="#EAF4E9"/>
+  <g transform="translate(160, 90)">
+    <circle cx="40" cy="40" r="48" fill="#DDE7DF"/>
+    <!-- Leaf Icon -->
+    <path d="M40 16 C22 16 16 32 16 52 C28 54 44 48 54 38 C64 28 66 18 40 16 Z" fill="#287A50"/>
+    <path d="M40 16 C40 38 30 52 16 52" stroke="#164B35" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M30 32 C36 34 42 32 46 28" stroke="#164B35" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+  <text x="200" y="210" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="15" font-weight="bold" fill="#164B35">
+    फसल चित्र (Crop Image)
+  </text>
+  <text x="200" y="235" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#5F6F65">
+    कृषिगण सुरक्षित कृषि निगरानी मंच
+  </text>
+</svg>
+

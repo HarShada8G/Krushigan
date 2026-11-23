@@ -78,7 +78,7 @@ export const OfflineProvider: React.FC<{ children: ReactNode }> = ({ children })
       
       const count = queuedReports.length;
       setQueuedReports([]);
-      setSyncSuccessMessage(`${count} à¤‘à¤«à¤¼à¤²à¤¾à¤‡à¤¨ à¤°à¤¿à¤ªà¥‹à¤°à¥à¤Ÿ à¤¸à¤«à¤²à¤¤à¤¾à¤ªà¥‚à¤°à¥à¤µà¤• à¤¸à¤°à¥à¤µà¤° à¤¸à¥‡ à¤¸à¤¿à¤‚à¤• à¤¹à¥‹ à¤—à¤ˆ! (${count} report(s) synced)`);
+      setSyncSuccessMessage(`${count} ऑफ़लाइन रिपोर्ट सफलतापूर्वक सर्वर से सिंक हो गई! (${count} report(s) synced)`);
 
       setTimeout(() => {
         setSyncSuccessMessage(null);

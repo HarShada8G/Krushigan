@@ -16,7 +16,7 @@ import {
   Wind
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis';
 import { DEMO_WEATHER, DEMO_ENVIRONMENTAL_RISK } from '../../data/demoData';
 import { FarmerHeader } from '../../components/layout/FarmerHeader';
