@@ -1,7 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.config import APP_NAME, APP_VERSION, DEBUG
-from app.routers import auth, farmer, weather, reports, officer, expert
+from app.config import APP_NAME, APP_VERSION, DEBUG, ALLOWED_ORIGINS
+from app.database import init_db
+from app.routers.auth import seed_demo_users
+from app.routers import auth, farmer, weather, reports, officer, expert, ai
 
 app = FastAPI(
     title=APP_NAME,
@@ -11,10 +13,16 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# CORS setup
+# Startup: Initialize persistent SQLite/PostgreSQL database and seed demo users safely
+@app.on_event("startup")
+def on_startup():
+    init_db()
+    seed_demo_users()
+
+# Production CORS setup with explicit allowed origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -27,6 +35,7 @@ app.include_router(weather.router)
 app.include_router(reports.router)
 app.include_router(officer.router)
 app.include_router(expert.router)
+app.include_router(ai.router)
 
 @app.get("/")
 def root():

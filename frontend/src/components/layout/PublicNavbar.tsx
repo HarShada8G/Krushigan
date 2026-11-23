@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Sprout, ShieldCheck, Menu, X, UserCircle2 } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Sprout, ShieldCheck, Menu, X, UserCircle2, LogOut, LogIn, UserPlus } from 'lucide-react';
 import { LanguageSelector } from '../common/LanguageSelector';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../hooks/useAuth';
 
 export const PublicNavbar: React.FC = () => {
   const { t } = useLanguage();
-  const { user } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+    setMobileMenuOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-40 bg-[#164B35] text-white shadow-md border-b border-[#287A50]/30">
@@ -63,27 +70,58 @@ export const PublicNavbar: React.FC = () => {
             </Link>
           </nav>
 
-          {/* Right actions: Language & Portals */}
-          <div className="hidden lg:flex items-center space-x-4">
+          {/* Right actions: Language, Auth & Portals */}
+          <div className="hidden lg:flex items-center space-x-3">
             <LanguageSelector variant="dark" />
 
-            {/* Quick Portals CTA */}
-            <div className="flex items-center space-x-2 border-l border-white/20 pl-3">
-              <Link
-                to="/farmer/dashboard"
-                className="bg-[#287A50] hover:bg-emerald-600 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-sm transition-all flex items-center space-x-1.5"
-              >
-                <span>🌱</span>
-                <span>{t('farmer_portal')}</span>
-              </Link>
-              <Link
-                to="/officer/dashboard"
-                className="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-3 py-2 rounded-xl border border-white/20 transition-all flex items-center space-x-1.5"
-              >
-                <ShieldCheck size={14} className="text-amber-300" />
-                <span>{t('officer_portal')}</span>
-              </Link>
-            </div>
+            {isAuthenticated && user ? (
+              <div className="flex items-center space-x-2 border-l border-white/20 pl-3">
+                {/* Active Portal Link */}
+                <Link
+                  to={user.role === 'farmer' ? '/farmer/dashboard' : '/officer/dashboard'}
+                  className="bg-[#287A50] hover:bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl shadow-sm transition-all flex items-center space-x-1.5"
+                >
+                  <span>{user.role === 'farmer' ? '🌱' : '🛡️'}</span>
+                  <span>{user.role === 'farmer' ? t('farmer_portal') : t('officer_portal')}</span>
+                </Link>
+
+                {/* User chip */}
+                <div className="flex items-center space-x-1.5 bg-white/10 px-2.5 py-1.5 rounded-xl border border-white/15 text-xs">
+                  <UserCircle2 size={16} className="text-emerald-300" />
+                  <span className="font-semibold text-white max-w-[120px] truncate">{user.name}</span>
+                  <span className="text-[10px] bg-emerald-800/80 text-emerald-200 px-1.5 py-0.5 rounded capitalize">
+                    {user.role}
+                  </span>
+                </div>
+
+                {/* Logout Button */}
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-600/80 hover:bg-red-700 text-white text-xs font-semibold px-2.5 py-1.5 rounded-xl border border-red-500/40 transition-all flex items-center space-x-1"
+                  title="लॉगआउट (Logout)"
+                >
+                  <LogOut size={13} />
+                  <span>लॉगआउट</span>
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2 border-l border-white/20 pl-3">
+                <Link
+                  to="/login"
+                  className="bg-[#287A50] hover:bg-emerald-600 text-white text-xs font-bold px-3.5 py-2 rounded-xl shadow-sm transition-all flex items-center space-x-1.5"
+                >
+                  <LogIn size={14} />
+                  <span>{t('login')}</span>
+                </Link>
+                <Link
+                  to="/register"
+                  className="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-3.5 py-2 rounded-xl border border-white/20 transition-all flex items-center space-x-1.5"
+                >
+                  <UserPlus size={14} className="text-emerald-300" />
+                  <span>{t('register')}</span>
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Mobile hamburger */}
@@ -103,22 +141,62 @@ export const PublicNavbar: React.FC = () => {
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
         <div className="lg:hidden bg-[#164B35] border-t border-[#287A50]/40 px-4 pt-3 pb-5 space-y-3">
-          <div className="grid grid-cols-2 gap-2 pb-2 border-b border-white/10">
-            <Link
-              to="/farmer/dashboard"
-              onClick={() => setMobileMenuOpen(false)}
-              className="bg-[#287A50] text-white text-center py-2.5 rounded-xl font-bold text-xs"
-            >
-              🌱 {t('farmer_portal')}
-            </Link>
-            <Link
-              to="/officer/dashboard"
-              onClick={() => setMobileMenuOpen(false)}
-              className="bg-white/15 text-white text-center py-2.5 rounded-xl font-semibold text-xs border border-white/20"
-            >
-              🛡️ {t('officer_portal')}
-            </Link>
-          </div>
+          {isAuthenticated && user ? (
+            <div className="space-y-2 pb-3 border-b border-white/10">
+              <div className="flex items-center justify-between bg-white/10 p-3 rounded-2xl">
+                <div className="flex items-center space-x-2">
+                  <UserCircle2 size={18} className="text-emerald-300" />
+                  <div>
+                    <p className="text-xs font-bold text-white leading-tight">{user.name}</p>
+                    <p className="text-[10px] text-emerald-200 capitalize">{user.role} · {user.district || 'India'}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-600/80 text-white text-[11px] font-bold px-2.5 py-1.5 rounded-xl flex items-center space-x-1"
+                >
+                  <LogOut size={12} />
+                  <span>लॉगआउट</span>
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <Link
+                  to="/farmer/dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="bg-[#287A50] text-white text-center py-2.5 rounded-xl font-bold text-xs"
+                >
+                  🌱 {t('farmer_portal')}
+                </Link>
+                <Link
+                  to="/officer/dashboard"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="bg-white/15 text-white text-center py-2.5 rounded-xl font-semibold text-xs border border-white/20"
+                >
+                  🛡️ {t('officer_portal')}
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-2 pb-2 border-b border-white/10">
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="bg-[#287A50] text-white text-center py-2.5 rounded-xl font-bold text-xs flex items-center justify-center space-x-1"
+              >
+                <LogIn size={13} />
+                <span>{t('login')}</span>
+              </Link>
+              <Link
+                to="/register"
+                onClick={() => setMobileMenuOpen(false)}
+                className="bg-white/15 text-white text-center py-2.5 rounded-xl font-semibold text-xs border border-white/20 flex items-center justify-center space-x-1"
+              >
+                <UserPlus size={13} />
+                <span>{t('register')}</span>
+              </Link>
+            </div>
+          )}
+
           <Link
             to="/"
             onClick={() => setMobileMenuOpen(false)}
@@ -139,13 +217,6 @@ export const PublicNavbar: React.FC = () => {
             className="block text-white/90 hover:text-white py-1.5 font-medium text-sm"
           >
             {t('about')}
-          </Link>
-          <Link
-            to="/login"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block text-emerald-300 hover:text-white py-1.5 font-medium text-sm"
-          >
-            {t('login')} / डेमो लॉगिन
           </Link>
         </div>
       )}

@@ -1,9 +1,10 @@
 import time
 from pydantic import BaseModel
 from typing import Literal, Optional
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from app.routers.reports import STORED_REPORTS
 from app.models.schemas import ExpertValidationSchema, CropReportSchema
+from app.routers.auth import require_roles, UserModel
 
 router = APIRouter(prefix="/api/expert", tags=["Expert Validation"])
 
@@ -21,7 +22,10 @@ class RequestImagePayload(BaseModel):
     expertId: str = "EXP-KVK-AKL-09"
 
 @router.post("/validate")
-def validate_report(payload: ValidationRequest):
+def validate_report(
+    payload: ValidationRequest,
+    current_user: UserModel = Depends(require_roles(["expert", "admin"]))
+):
     for r in STORED_REPORTS:
         if r.id == payload.reportId:
             status_map = {
@@ -47,7 +51,10 @@ def validate_report(payload: ValidationRequest):
     raise HTTPException(status_code=404, detail="Report not found")
 
 @router.post("/request-image")
-def request_new_image(payload: RequestImagePayload):
+def request_new_image(
+    payload: RequestImagePayload,
+    current_user: UserModel = Depends(require_roles(["expert", "admin"]))
+):
     return {
         "success": True,
         "message": f"Farmer notified to re-upload clear photo for report {payload.reportId}: {payload.reason}",

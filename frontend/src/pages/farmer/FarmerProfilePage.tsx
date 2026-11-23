@@ -5,14 +5,39 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../hooks/useAuth';
 import { FarmerHeader } from '../../components/layout/FarmerHeader';
 import { FarmerBottomNav } from '../../components/layout/FarmerBottomNav';
+import { INDIA_STATES_DATA, getDistrictsForState, getDistrictCoordinates } from '../../data/indiaLocations';
 
 export const FarmerProfilePage: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { farmerProfile, updateFarmerProfile } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState(farmerProfile);
   const [savedSuccess, setSavedSuccess] = useState(false);
+
+  const availableDistricts = getDistrictsForState(formData.state || 'Maharashtra');
+
+  const handleStateChange = (newState: string) => {
+    const districts = getDistrictsForState(newState);
+    const firstDist = districts[0] || { name: 'Central', lat: 20.5937, lng: 78.9629 };
+    setFormData(prev => ({
+      ...prev,
+      state: newState,
+      district: firstDist.name,
+      latitude: firstDist.lat,
+      longitude: firstDist.lng
+    }));
+  };
+
+  const handleDistrictChange = (newDistrict: string) => {
+    const coords = getDistrictCoordinates(formData.state || 'Maharashtra', newDistrict);
+    setFormData(prev => ({
+      ...prev,
+      district: newDistrict,
+      latitude: coords.lat,
+      longitude: coords.lng
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,17 +114,40 @@ export const FarmerProfilePage: React.FC = () => {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-bold text-[#202D25] mb-1">
-                  {t('district')}
+                  {t('state')} *
                 </label>
-                <input
-                  type="text"
-                  value={formData.district}
-                  onChange={e => setFormData({ ...formData, district: e.target.value })}
+                <select
+                  value={formData.state || 'Maharashtra'}
+                  onChange={e => handleStateChange(e.target.value)}
                   className="w-full px-3 py-2 rounded-xl border border-[#DDE7DF] text-xs font-medium"
-                  required
-                />
+                >
+                  {INDIA_STATES_DATA.map(st => (
+                    <option key={st.name} value={st.name}>
+                      {language === 'mr' ? st.nameMr : language === 'hi' ? st.nameHi : st.name} ({st.name})
+                    </option>
+                  ))}
+                </select>
               </div>
 
+              <div>
+                <label className="block text-xs font-bold text-[#202D25] mb-1">
+                  {t('district')} *
+                </label>
+                <select
+                  value={formData.district}
+                  onChange={e => handleDistrictChange(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl border border-[#DDE7DF] text-xs font-medium"
+                >
+                  {availableDistricts.map(dist => (
+                    <option key={dist.name} value={dist.name}>
+                      {language === 'mr' ? dist.nameMr : language === 'hi' ? dist.nameHi : dist.name} ({dist.name})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-bold text-[#202D25] mb-1">
                   {t('taluka')}
@@ -112,19 +160,19 @@ export const FarmerProfilePage: React.FC = () => {
                   required
                 />
               </div>
-            </div>
 
-            <div>
-              <label className="block text-xs font-bold text-[#202D25] mb-1">
-                {t('village')}
-              </label>
-              <input
-                type="text"
-                value={formData.village}
-                onChange={e => setFormData({ ...formData, village: e.target.value })}
-                className="w-full px-3.5 py-2 rounded-xl border border-[#DDE7DF] text-xs font-medium"
-                required
-              />
+              <div>
+                <label className="block text-xs font-bold text-[#202D25] mb-1">
+                  {t('village')}
+                </label>
+                <input
+                  type="text"
+                  value={formData.village}
+                  onChange={e => setFormData({ ...formData, village: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl border border-[#DDE7DF] text-xs font-medium"
+                  required
+                />
+              </div>
             </div>
 
             <div className="bg-[#F8F7F0] p-3 rounded-2xl border border-[#DDE7DF] text-xs space-y-1">

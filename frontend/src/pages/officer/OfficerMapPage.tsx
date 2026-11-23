@@ -16,22 +16,57 @@ import { OfficerHeader } from '../../components/layout/OfficerHeader';
 import { OfficerSidebar } from '../../components/layout/OfficerSidebar';
 import { DemoBanner } from '../../components/common/DemoBanner';
 import { MAHARASHTRA_DISTRICT_HOTSPOTS, MAHARASHTRA_CENTER } from '../../data/maharashtraGeo';
+import { INDIA_STATES_DATA, getStateInfo } from '../../data/indiaLocations';
 import { MaharashtraDistrictHotspot } from '../../types';
 
 // Helper component to center map on selection
-function ChangeMapView({ coords }: { coords: [number, number] }) {
+function ChangeMapView({ coords, zoom }: { coords: [number, number]; zoom?: number }) {
   const map = useMap();
-  map.setView(coords, map.getZoom());
+  map.setView(coords, zoom || map.getZoom());
   return null;
 }
 
 export const OfficerMapPage: React.FC = () => {
+  const [selectedState, setSelectedState] = useState<string>('Maharashtra');
   const [spots, setSpots] = useState<MaharashtraDistrictHotspot[]>(MAHARASHTRA_DISTRICT_HOTSPOTS);
   const [selectedSpot, setSelectedSpot] = useState<MaharashtraDistrictHotspot | null>(MAHARASHTRA_DISTRICT_HOTSPOTS[0]);
-  
+  const [mapCenter, setMapCenter] = useState<[number, number]>([MAHARASHTRA_CENTER.lat, MAHARASHTRA_CENTER.lng]);
+  const [mapZoom, setMapZoom] = useState<number>(7);
+
   // Filter States
   const [filterCrop, setFilterCrop] = useState<string>('all');
   const [filterRisk, setFilterRisk] = useState<string>('all');
+
+  const handleStateChange = (stateName: string) => {
+    setSelectedState(stateName);
+    const stInfo = getStateInfo(stateName);
+    setMapCenter([stInfo.center.lat, stInfo.center.lng]);
+    setMapZoom(7);
+
+    if (stateName === 'Maharashtra') {
+      setSpots(MAHARASHTRA_DISTRICT_HOTSPOTS);
+      setSelectedSpot(MAHARASHTRA_DISTRICT_HOTSPOTS[0]);
+    } else {
+      // Generate state hotspots dynamically
+      const stateSpots: MaharashtraDistrictHotspot[] = stInfo.districts.map((d, idx) => ({
+        district: d.name,
+        marathiName: d.nameMr,
+        lat: d.lat,
+        lng: d.lng,
+        riskLevel: idx % 3 === 0 ? 'high' : idx % 3 === 1 ? 'medium' : 'low',
+        activeReportsCount: Math.floor(15 + (idx * 7) % 30),
+        confirmedCasesCount: Math.floor(10 + (idx * 5) % 20),
+        primaryCrop: idx % 2 === 0 ? 'Wheat / Mustard' : 'Cotton / Pulses',
+        prevalentDisease: idx % 2 === 0 ? 'Yellow Rust / Aphids' : 'Blight / Root Rot',
+        recentWeather: 'Seasonal Humidity (65%), Moderate Winds',
+        trend: idx % 2 === 0 ? 'increasing' : 'stable',
+        talukasHighRisk: [`${d.name} Rural`, `${d.name} North`],
+        isDemoData: true
+      }));
+      setSpots(stateSpots);
+      setSelectedSpot(stateSpots[0] || null);
+    }
+  };
 
   const filteredSpots = spots.filter(spot => {
     if (filterCrop !== 'all' && !spot.primaryCrop.toLowerCase().includes(filterCrop.toLowerCase())) {
@@ -72,15 +107,32 @@ export const OfficerMapPage: React.FC = () => {
           <div className="bg-white rounded-3xl p-4 sm:p-5 shadow-card border border-[#DDE7DF] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-xl sm:text-2xl font-black text-[#164B35]">
-                महाराष्ट्र GIS हॉटस्पॉट व रोग प्रसार मानचित्र
+                GIS फसल स्वास्थ्य एवं रोग प्रसार मानचित्र
               </h1>
               <p className="text-xs text-[#5F6F65]">
-                वास्तविक भौगोलिक निर्देशांक आधारित जिला व तहसील स्तरीय जोखिम क्लस्टर्स
+                अखिल भारतीय राज्य व जिला स्तरीय निगरानी क्लस्टर्स (Pan-India Hotspots & Disease Tracking)
               </p>
             </div>
 
             {/* Filters */}
             <div className="flex flex-wrap items-center gap-2">
+              {/* State Filter */}
+              <div className="flex items-center space-x-1.5 text-xs bg-[#F8F7F0] px-3 py-1.5 rounded-xl border border-[#DDE7DF]">
+                <MapPin size={13} className="text-[#287A50]" />
+                <span className="font-bold text-[#5F6F65]">राज्य:</span>
+                <select
+                  value={selectedState}
+                  onChange={e => handleStateChange(e.target.value)}
+                  className="bg-transparent font-bold text-[#164B35] focus:outline-none"
+                >
+                  {INDIA_STATES_DATA.map(st => (
+                    <option key={st.name} value={st.name}>
+                      {st.name} ({st.nameHi})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <div className="flex items-center space-x-1.5 text-xs bg-[#F8F7F0] px-3 py-1.5 rounded-xl border border-[#DDE7DF]">
                 <Filter size={13} className="text-[#287A50]" />
                 <span className="font-bold text-[#5F6F65]">फसल:</span>
@@ -94,6 +146,7 @@ export const OfficerMapPage: React.FC = () => {
                   <option value="Cotton">कपास (Cotton)</option>
                   <option value="Soybean">सोयाबीन (Soybean)</option>
                   <option value="Onion">प्याज (Onion)</option>
+                  <option value="Wheat">गेहूं (Wheat)</option>
                 </select>
               </div>
 
@@ -119,8 +172,8 @@ export const OfficerMapPage: React.FC = () => {
             {/* Map Container */}
             <div className="lg:col-span-8 bg-white rounded-3xl overflow-hidden shadow-card border border-[#DDE7DF] h-[520px] relative z-0">
               <MapContainer
-                center={[MAHARASHTRA_CENTER.lat, MAHARASHTRA_CENTER.lng]}
-                zoom={MAHARASHTRA_CENTER.zoom}
+                center={mapCenter}
+                zoom={mapZoom}
                 scrollWheelZoom={true}
                 className="w-full h-full"
               >
@@ -129,9 +182,7 @@ export const OfficerMapPage: React.FC = () => {
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
 
-                {selectedSpot && (
-                  <ChangeMapView coords={[selectedSpot.lat, selectedSpot.lng]} />
-                )}
+                <ChangeMapView coords={selectedSpot ? [selectedSpot.lat, selectedSpot.lng] : mapCenter} zoom={mapZoom} />
 
                 {filteredSpots.map(spot => {
                   const color = getMarkerColor(spot.riskLevel);

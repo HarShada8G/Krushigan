@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Sprout, Mic, ShieldAlert, ArrowLeftRight, User, HelpCircle } from 'lucide-react';
+import { Sprout, Mic, ArrowLeftRight, User, LogOut } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../hooks/useAuth';
 import { LanguageSelector } from '../common/LanguageSelector';
@@ -8,9 +8,14 @@ import { VoiceAssistantModal } from '../common/VoiceAssistantModal';
 
 export const FarmerHeader: React.FC = () => {
   const { t } = useLanguage();
-  const { farmerProfile, switchRole } = useAuth();
+  const { farmerProfile, switchRole, logout } = useAuth();
   const [isVoiceOpen, setIsVoiceOpen] = useState(false);
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <>
@@ -29,7 +34,7 @@ export const FarmerHeader: React.FC = () => {
             </div>
           </Link>
 
-          {/* Controls: Voice & Language & Switcher */}
+          {/* Controls: Voice & Language & Profile & Logout & Switcher */}
           <div className="flex items-center space-x-2">
             {/* Voice Assistant Shortcut */}
             <button
@@ -39,6 +44,15 @@ export const FarmerHeader: React.FC = () => {
             >
               <Mic size={18} className="text-emerald-300" />
             </button>
+
+            {/* Profile Navigation */}
+            <Link
+              to="/farmer/profile"
+              className="bg-white/10 hover:bg-white/20 text-white/90 p-2 rounded-full border border-white/15 transition-all"
+              title={t('profile_title') || 'प्रोफाइल (Profile)'}
+            >
+              <User size={16} className="text-emerald-300" />
+            </Link>
 
             {/* Language Selector */}
             <LanguageSelector variant="dark" />
@@ -53,6 +67,15 @@ export const FarmerHeader: React.FC = () => {
               <ArrowLeftRight size={14} className="text-amber-300" />
               <span className="hidden sm:inline text-[11px] font-medium">अधिकारी</span>
             </Link>
+
+            {/* Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="bg-red-600/80 hover:bg-red-700 text-white p-1.5 rounded-lg text-xs flex items-center space-x-1 transition-all"
+              title="लॉगआउट (Logout)"
+            >
+              <LogOut size={14} />
+            </button>
           </div>
         </div>
       </header>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   Camera, 
@@ -19,6 +19,8 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../hooks/useAuth';
 import { useSpeechSynthesis } from '../../hooks/useSpeechSynthesis';
 import { DEMO_WEATHER, DEMO_ENVIRONMENTAL_RISK } from '../../data/demoData';
+import { getWeatherData } from '../../services/api';
+import { WeatherData } from '../../types';
 import { FarmerHeader } from '../../components/layout/FarmerHeader';
 import { FarmerBottomNav } from '../../components/layout/FarmerBottomNav';
 import { OfflineBanner } from '../../components/common/OfflineBanner';
@@ -29,7 +31,16 @@ export const FarmerDashboardPage: React.FC = () => {
   const { farmerProfile } = useAuth();
   const { speak, isSpeaking } = useSpeechSynthesis(language);
   const [isVoiceOpen, setIsVoiceOpen] = useState(false);
+  const [weather, setWeather] = useState<WeatherData>(DEMO_WEATHER);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (farmerProfile?.district) {
+      getWeatherData(farmerProfile.district, farmerProfile.latitude, farmerProfile.longitude)
+        .then(data => setWeather(data))
+        .catch(() => {});
+    }
+  }, [farmerProfile?.district, farmerProfile?.latitude, farmerProfile?.longitude]);
 
   // Selected crop & risk calculations
   const cropName = farmerProfile.currentCrop || 'Tomato';
@@ -56,7 +67,9 @@ export const FarmerDashboardPage: React.FC = () => {
             <div className="flex items-center space-x-1 text-xs text-[#5F6F65] mt-1 font-medium">
               <MapPin size={13} className="text-[#287A50]" />
               <span>
-                {farmerProfile.village}, {farmerProfile.taluka}, {farmerProfile.district} (महाराष्ट्र)
+                {farmerProfile.village ? `${farmerProfile.village}, ` : ''}
+                {farmerProfile.taluka ? `${farmerProfile.taluka}, ` : ''}
+                {farmerProfile.district} ({farmerProfile.state || 'India'})
               </span>
             </div>
           </div>
@@ -78,17 +91,19 @@ export const FarmerDashboardPage: React.FC = () => {
               <CloudSun size={16} className="text-amber-500" />
             </div>
             <div className="flex items-baseline space-x-1">
-              <span className="text-3xl font-black text-[#202D25]">{DEMO_WEATHER.temperature}°C</span>
-              <span className="text-[11px] text-[#5F6F65]">धूप व बादल</span>
+              <span className="text-3xl font-black text-[#202D25]">{weather.temperature}°C</span>
+              <span className="text-[11px] text-[#5F6F65] truncate max-w-[100px]">
+                {language === 'mr' ? weather.conditionMr : language === 'en' ? weather.condition : weather.conditionHi}
+              </span>
             </div>
             <div className="text-[11px] text-[#5F6F65] space-y-0.5 border-t border-[#DDE7DF] pt-1.5">
               <div className="flex items-center justify-between">
                 <span>{t('rain_probability')}:</span>
-                <span className="font-bold text-[#164B35]">{DEMO_WEATHER.rainfallProbability}%</span>
+                <span className="font-bold text-[#164B35]">{weather.rainfallProbability}%</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>{t('humidity')}:</span>
-                <span className="font-bold text-[#164B35]">{DEMO_WEATHER.humidity}%</span>
+                <span className="font-bold text-[#164B35]">{weather.humidity}%</span>
               </div>
             </div>
           </div>

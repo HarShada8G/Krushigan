@@ -79,6 +79,19 @@ export const OfficerHeader: React.FC = () => {
             <ArrowLeftRight size={13} />
             <span className="hidden sm:inline">किसान पोर्टल</span>
           </button>
+
+          {/* Logout Action */}
+          <button
+            onClick={() => {
+              logout();
+              navigate('/login');
+            }}
+            className="flex items-center space-x-1 text-xs bg-red-600/80 hover:bg-red-700 text-white font-medium px-2.5 py-1.5 rounded-lg shadow-sm transition-all"
+            title="लॉगआउट (Logout)"
+          >
+            <LogOut size={13} />
+            <span className="hidden sm:inline">लॉगआउट</span>
+          </button>
         </div>
       </div>
     </header>

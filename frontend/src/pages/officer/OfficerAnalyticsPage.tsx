@@ -27,6 +27,7 @@ import { OfficerHeader } from '../../components/layout/OfficerHeader';
 import { OfficerSidebar } from '../../components/layout/OfficerSidebar';
 import { DemoBanner } from '../../components/common/DemoBanner';
 import { DEMO_LEARNING_METRICS } from '../../data/demoData';
+import { useLanguage } from '../../context/LanguageContext';
 
 const MONTHLY_EPIDEMIC_DATA = [
   { month: 'Jun', EarlyBlight: 120, Rust: 40, Aphids: 80 },
@@ -46,6 +47,7 @@ const DISTRICT_SEVERITY_BARS = [
 ];
 
 export const OfficerAnalyticsPage: React.FC = () => {
+  const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState<'analytics' | 'learning_loop'>('analytics');
   const [isRetraining, setIsRetraining] = useState(false);
   const [retrainSuccessMsg, setRetrainSuccessMsg] = useState<string | null>(null);
@@ -96,7 +98,7 @@ export const OfficerAnalyticsPage: React.FC = () => {
                     : 'text-[#5F6F65] hover:text-[#164B35]'
                 }`}
               >
-                📊 रोग प्रसार ट्रेंड
+                📊 {t('tab_analytics')}
               </button>
               <button
                 type="button"
@@ -107,7 +109,7 @@ export const OfficerAnalyticsPage: React.FC = () => {
                     : 'text-[#5F6F65] hover:text-[#164B35]'
                 }`}
               >
-                🧠 एआई लर्निंग लूप (Sec 19)
+                🧠 {t('tab_learning_loop')}
               </button>
             </div>
           </div>

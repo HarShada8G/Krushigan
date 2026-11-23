@@ -5,10 +5,11 @@ import { DemoBanner } from '../../components/common/DemoBanner';
 import { useAuth } from '../../hooks/useAuth';
 import { useLanguage } from '../../context/LanguageContext';
 import { Sprout, MapPin, CheckCircle2, Navigation, AlertCircle } from 'lucide-react';
+import { INDIA_STATES_DATA, getDistrictsForState, getDistrictCoordinates } from '../../data/indiaLocations';
 
 export const RegisterPage: React.FC = () => {
-  const { updateFarmerProfile, login } = useAuth();
-  const { t } = useLanguage();
+  const { updateFarmerProfile, registerWithCredentials, login } = useAuth();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -27,8 +28,33 @@ export const RegisterPage: React.FC = () => {
     longitude: 77.0583
   });
 
+  const [submitting, setSubmitting] = useState(false);
   const [gpsLoading, setGpsLoading] = useState(false);
   const [gpsMessage, setGpsMessage] = useState<string | null>(null);
+
+  const availableDistricts = getDistrictsForState(formData.state);
+
+  const handleStateChange = (newState: string) => {
+    const districts = getDistrictsForState(newState);
+    const firstDist = districts[0] || { name: 'Central', lat: 20.5937, lng: 78.9629 };
+    setFormData(prev => ({
+      ...prev,
+      state: newState,
+      district: firstDist.name,
+      latitude: firstDist.lat,
+      longitude: firstDist.lng
+    }));
+  };
+
+  const handleDistrictChange = (newDistrict: string) => {
+    const coords = getDistrictCoordinates(formData.state, newDistrict);
+    setFormData(prev => ({
+      ...prev,
+      district: newDistrict,
+      latitude: coords.lat,
+      longitude: coords.lng
+    }));
+  };
 
   const handleGetLocation = () => {
     setGpsLoading(true);
@@ -41,11 +67,11 @@ export const RegisterPage: React.FC = () => {
             longitude: Number(pos.coords.longitude.toFixed(4)),
             locationConsent: true
           }));
-          setGpsMessage("GPS स्थान सफलतापूर्वक दर्ज किया गया (Lat: " + pos.coords.latitude.toFixed(4) + ")");
+          setGpsMessage("GPS स्थान सफलतापूर्वक दर्ज किया गया (Lat: " + pos.coords.latitude.toFixed(4) + ", Lng: " + pos.coords.longitude.toFixed(4) + ")");
           setGpsLoading(false);
         },
         err => {
-          setGpsMessage("GPS अनुपलब्ध। डेमो स्थान अकोला (21.0975, 77.0583) का उपयोग किया जा रहा है।");
+          setGpsMessage("GPS अनुपलब्ध। चयनित जिला निर्देशांक का उपयोग किया जा रहा है।");
           setGpsLoading(false);
         },
         { timeout: 5000 }
@@ -56,10 +82,23 @@ export const RegisterPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitting(true);
     updateFarmerProfile(formData);
-    login('farmer');
+    try {
+      await registerWithCredentials({
+        username: formData.name,
+        password: 'password123',
+        role: 'farmer',
+        phone: formData.phone,
+        district: formData.district
+      });
+    } catch (err) {
+      // Fallback
+      login('farmer');
+    }
+    setSubmitting(false);
     navigate('/farmer/dashboard');
   };
 
@@ -115,14 +154,18 @@ export const RegisterPage: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
               <div>
                 <label className="block text-xs font-bold text-[#202D25] mb-1">
-                  {t('state')}
+                  {t('state')} *
                 </label>
                 <select
                   value={formData.state}
-                  onChange={e => setFormData({ ...formData, state: e.target.value })}
+                  onChange={e => handleStateChange(e.target.value)}
                   className="w-full px-3 py-2.5 rounded-xl border border-[#DDE7DF] text-xs font-medium focus:ring-2 focus:ring-[#287A50]"
                 >
-                  <option value="Maharashtra">महाराष्ट्र (Maharashtra)</option>
+                  {INDIA_STATES_DATA.map(st => (
+                    <option key={st.name} value={st.name}>
+                      {language === 'mr' ? st.nameMr : language === 'hi' ? st.nameHi : st.name} ({st.name})
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -132,16 +175,14 @@ export const RegisterPage: React.FC = () => {
                 </label>
                 <select
                   value={formData.district}
-                  onChange={e => setFormData({ ...formData, district: e.target.value })}
+                  onChange={e => handleDistrictChange(e.target.value)}
                   className="w-full px-3 py-2.5 rounded-xl border border-[#DDE7DF] text-xs font-medium focus:ring-2 focus:ring-[#287A50]"
                 >
-                  <option value="Akola">Akola (अकोला)</option>
-                  <option value="Amravati">Amravati (अमरावती)</option>
-                  <option value="Nagpur">Nagpur (नागपूर)</option>
-                  <option value="Nashik">Nashik (नाशिक)</option>
-                  <option value="Pune">Pune (पुणे)</option>
-                  <option value="Jalgaon">Jalgaon (जळगाव)</option>
-                  <option value="Solapur">Solapur (सोलापूर)</option>
+                  {availableDistricts.map(dist => (
+                    <option key={dist.name} value={dist.name}>
+                      {language === 'mr' ? dist.nameMr : language === 'hi' ? dist.nameHi : dist.name} ({dist.name})
+                    </option>
+                  ))}
                 </select>
               </div>
 
