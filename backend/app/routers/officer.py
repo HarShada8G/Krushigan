@@ -1,4 +1,4 @@
-﻿import time
+import time
 from typing import List
 from fastapi import APIRouter
 from app.models.schemas import (
@@ -16,7 +16,7 @@ router = APIRouter(prefix="/api/officer", tags=["Government Officer Portal"])
 MAHARASHTRA_HOTSPOTS: List[HotspotSchema] = [
     HotspotSchema(
         district="Akola",
-        marathiName="à¤…à¤•à¥‹à¤²à¤¾",
+        marathiName="अकोला",
         lat=20.7002,
         lng=77.0082,
         riskLevel="high",
@@ -31,7 +31,7 @@ MAHARASHTRA_HOTSPOTS: List[HotspotSchema] = [
     ),
     HotspotSchema(
         district="Nashik",
-        marathiName="à¤¨à¤¾à¤¶à¤¿à¤•",
+        marathiName="नाशिक",
         lat=19.9975,
         lng=73.7898,
         riskLevel="severe",
@@ -46,7 +46,7 @@ MAHARASHTRA_HOTSPOTS: List[HotspotSchema] = [
     ),
     HotspotSchema(
         district="Amravati",
-        marathiName="à¤…à¤®à¤°à¤¾à¤µà¤¤à¥€",
+        marathiName="अमरावती",
         lat=20.9374,
         lng=77.7796,
         riskLevel="medium",
@@ -54,14 +54,14 @@ MAHARASHTRA_HOTSPOTS: List[HotspotSchema] = [
         confirmedCasesCount=38,
         primaryCrop="Cotton",
         prevalentDisease="Cotton Aphids & Bollworm",
-        recentWeather="Warm 31Â°C, Humidity 68%",
+        recentWeather="Warm 31°C, Humidity 68%",
         trend="stable",
         talukasHighRisk=["Achalpur", "Morshi", "Warud"],
         isDemoData=True
     ),
     HotspotSchema(
         district="Nagpur",
-        marathiName="à¤¨à¤¾à¤—à¤ªà¥‚à¤°",
+        marathiName="नागपूर",
         lat=21.1458,
         lng=79.0882,
         riskLevel="medium",
@@ -69,14 +69,14 @@ MAHARASHTRA_HOTSPOTS: List[HotspotSchema] = [
         confirmedCasesCount=29,
         primaryCrop="Soybean",
         prevalentDisease="Yellow Mosaic & Stem Fly",
-        recentWeather="Partly Cloudy, 30Â°C",
+        recentWeather="Partly Cloudy, 30°C",
         trend="decreasing",
         talukasHighRisk=["Katol", "Saoner", "Umred"],
         isDemoData=True
     ),
     HotspotSchema(
         district="Pune",
-        marathiName="à¤ªà¥à¤£à¥‡",
+        marathiName="पुणे",
         lat=18.5204,
         lng=73.8567,
         riskLevel="low",
@@ -84,7 +84,7 @@ MAHARASHTRA_HOTSPOTS: List[HotspotSchema] = [
         confirmedCasesCount=14,
         primaryCrop="Sugarcane / Vegetables",
         prevalentDisease="Early Shoot Borer",
-        recentWeather="Pleasant 27Â°C, Humidity 62%",
+        recentWeather="Pleasant 27°C, Humidity 62%",
         trend="stable",
         talukasHighRisk=["Junnar", "Shirur", "Baramati"],
         isDemoData=True
@@ -100,7 +100,7 @@ STORED_ALERTS: List[BroadcastAlertSchema] = [
         crop="Tomato",
         diseaseOrPest="Early Blight",
         riskLevel="high",
-        messageHi="à¤Ÿà¤®à¤¾à¤Ÿà¤° à¤•à¤¿à¤¸à¤¾à¤¨à¥‹à¤‚ à¤•à¥‡ à¤²à¤¿à¤ à¤¸à¤¤à¤°à¥à¤•à¤¤à¤¾: à¤…à¤—à¤²à¥‡ 48 à¤˜à¤‚à¤Ÿà¥‹à¤‚ à¤®à¥‡à¤‚ à¤‰à¤šà¥à¤š à¤†à¤°à¥à¤¦à¥à¤°à¤¤à¤¾ à¤•à¥‡ à¤•à¤¾à¤°à¤£ à¤…à¤—à¥‡à¤¤à¥€ à¤à¥à¤²à¤¸à¤¾ à¤•à¤¾ à¤–à¤¤à¤°à¤¾ à¤¹à¥ˆà¥¤ à¤¤à¥à¤°à¤‚à¤¤ à¤¨à¤¿à¤šà¤²à¥€ à¤ªà¤¤à¥à¤¤à¤¿à¤¯à¥‹à¤‚ à¤•à¥€ à¤œà¤¾à¤‚à¤š à¤•à¤°à¥‡à¤‚à¥¤",
+        messageHi="टमाटर किसानों के लिए सतर्कता: अगले 48 घंटों में उच्च आर्द्रता के कारण अगेती झुलसा का खतरा है। तुरंत निचली पत्तियों की जांच करें।",
         targetCount=1240,
         dispatchedAt="2026-11-19 04:00 PM",
         deliveryStatus="simulated_sent",

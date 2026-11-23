@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Phone, MapPin, Sprout, ArrowLeft, Check, Navigation } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { FarmerHeader } from '../../components/layout/FarmerHeader';
 import { FarmerBottomNav } from '../../components/layout/FarmerBottomNav';
 

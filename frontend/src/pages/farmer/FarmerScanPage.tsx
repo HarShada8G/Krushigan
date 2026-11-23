@@ -12,7 +12,7 @@ import {
   Info
 } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { useOffline } from '../../context/OfflineContext';
 import { analyzeCropPhoto, saveCropReport } from '../../services/api';
 import { CropReport } from '../../types';
@@ -24,17 +24,17 @@ const SAMPLE_DEMO_LEAVES = [
   {
     label: "टमाटर (अर्ली ब्लाइट)",
     crop: "Tomato",
-    url: "https://images.unsplash.com/photo-1592417817098-8f3d6eb22509?auto=format&fit=crop&w=800&q=80"
+    url: "/images/crops/tomato_early_blight.jpg"
   },
   {
-    label: "कपास (माहू / कीट)",
-    crop: "Cotton",
-    url: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&w=800&q=80"
+    label: "टमाटर (पत्ती मरोड़)",
+    crop: "Tomato",
+    url: "/images/crops/tomato_leaf_curl.jpg"
   },
   {
     label: "प्याज (बैंगनी धब्बा)",
     crop: "Onion",
-    url: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=800&q=80"
+    url: "/images/crops/onion_purple_blotch.jpg"
   }
 ];
 

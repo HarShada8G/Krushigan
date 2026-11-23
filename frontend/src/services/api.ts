@@ -128,7 +128,7 @@ export const analyzeCropPhoto = async (
         applicationInstructions: matchedDisease.recommendations.red.applicationInstructionsHi,
         safetyPrecautions: matchedDisease.recommendations.red.safetyPrecautionsHi,
         preHarvestInterval: matchedDisease.recommendations.red.preHarvestIntervalDays 
-          ? `${matchedDisease.recommendations.red.preHarvestIntervalDays} à¤¦à¤¿à¤¨ (Days)` 
+          ? `${matchedDisease.recommendations.red.preHarvestIntervalDays} दिन (Days)`
           : undefined,
         disclaimer: matchedDisease.recommendations.red.disclaimerHi
       }
@@ -146,6 +146,20 @@ export const getFarmerReports = async (): Promise<CropReport[]> => {
   if (localReports.length === 0) {
     localReports = INITIAL_DEMO_REPORTS;
     localStorage.setItem('krushigan_reports_history', JSON.stringify(localReports));
+  } else {
+    // Ensure canonical demo reports reflect updated accurate crop disease images
+    let modified = false;
+    localReports = localReports.map(rep => {
+      const canonical = INITIAL_DEMO_REPORTS.find(d => d.id === rep.id);
+      if (canonical && rep.imageUrl !== canonical.imageUrl) {
+        modified = true;
+        return { ...rep, imageUrl: canonical.imageUrl };
+      }
+      return rep;
+    });
+    if (modified) {
+      localStorage.setItem('krushigan_reports_history', JSON.stringify(localReports));
+    }
   }
   return localReports;
 };

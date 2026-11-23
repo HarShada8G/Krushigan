@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Sprout, Mic, ShieldAlert, ArrowLeftRight, User, HelpCircle } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { LanguageSelector } from '../common/LanguageSelector';
 import { VoiceAssistantModal } from '../common/VoiceAssistantModal';
 

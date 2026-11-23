@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PublicNavbar } from '../../components/layout/PublicNavbar';
 import { DemoBanner } from '../../components/common/DemoBanner';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { useLanguage } from '../../context/LanguageContext';
 import { Sprout, MapPin, CheckCircle2, Navigation, AlertCircle } from 'lucide-react';
 

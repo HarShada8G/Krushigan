@@ -77,7 +77,7 @@ export const INITIAL_DEMO_REPORTS: CropReport[] = [
     crop: "Tomato",
     variety: "Abhinav",
     growthStage: "Flowering",
-    imageUrl: "https://images.unsplash.com/photo-1592417817098-8f3d6eb22509?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/images/crops/tomato_early_blight.jpg",
     timestamp: "2026-11-18 10:30 AM",
     status: "expert_confirmed",
     diagnosis: {
@@ -138,7 +138,7 @@ export const INITIAL_DEMO_REPORTS: CropReport[] = [
     crop: "Tomato",
     variety: "Vaibhav",
     growthStage: "Fruiting",
-    imageUrl: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/images/crops/tomato_leaf_curl.jpg",
     timestamp: "2026-11-19 03:15 PM",
     status: "pending",
     diagnosis: {
@@ -194,7 +194,7 @@ export const INITIAL_DEMO_REPORTS: CropReport[] = [
     crop: "Onion",
     variety: "Gavran (लाल कांदा)",
     growthStage: "Vegetative",
-    imageUrl: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?auto=format&fit=crop&w=800&q=80",
+    imageUrl: "/images/crops/onion_purple_blotch.jpg",
     timestamp: "2026-11-20 09:10 AM",
     status: "pending",
     diagnosis: {

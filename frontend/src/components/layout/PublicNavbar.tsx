@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Sprout, ShieldCheck, Menu, X, UserCircle2 } from 'lucide-react';
 import { LanguageSelector } from '../common/LanguageSelector';
 import { useLanguage } from '../../context/LanguageContext';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 
 export const PublicNavbar: React.FC = () => {
   const { t } = useLanguage();
