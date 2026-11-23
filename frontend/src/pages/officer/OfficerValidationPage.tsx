@@ -18,10 +18,12 @@ import { DemoBanner } from '../../components/common/DemoBanner';
 import { getFarmerReports, saveCropReport } from '../../services/api';
 import { CropReport } from '../../types';
 import { DEMO_LEARNING_METRICS } from '../../data/demoData';
+import { useLanguage } from '../../context/LanguageContext';
 
 const FALLBACK_CROP_IMAGE = '/images/crops/crop_fallback.svg';
 
 export const OfficerValidationPage: React.FC = () => {
+  const { t, language } = useLanguage();
   const [reports, setReports] = useState<CropReport[]>([]);
   const [activeReport, setActiveReport] = useState<CropReport | null>(null);
   const [expertNote, setExpertNote] = useState('');
@@ -270,7 +272,7 @@ export const OfficerValidationPage: React.FC = () => {
                         className="bg-[#164B35] hover:bg-[#287A50] text-white py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 shadow-sm transition-all"
                       >
                         <CheckCheck size={14} className="text-emerald-300" />
-                        <span>निदान की पुष्टि करें</span>
+                        <span>{t('confirm_diagnosis')}</span>
                       </button>
 
                       {/* 2. Correct Diagnosis */}
@@ -280,7 +282,7 @@ export const OfficerValidationPage: React.FC = () => {
                         className="bg-[#287A50] hover:bg-emerald-700 text-white py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 shadow-sm transition-all"
                       >
                         <Sparkles size={14} className="text-amber-300" />
-                        <span>निदान संशोधित करें</span>
+                        <span>{t('correct_diagnosis')}</span>
                       </button>
 
                       {/* 3. Request New Image */}
@@ -290,7 +292,7 @@ export const OfficerValidationPage: React.FC = () => {
                         className="bg-white hover:bg-gray-50 text-[#202D25] border border-[#DDE7DF] py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 transition-colors"
                       >
                         <ImageIcon size={14} className="text-blue-600" />
-                        <span>नई फोटो मांगें</span>
+                        <span>{t('request_new_image')}</span>
                       </button>
 
                       {/* 4. Refer to Laboratory */}
@@ -300,7 +302,7 @@ export const OfficerValidationPage: React.FC = () => {
                         className="bg-white hover:bg-gray-50 text-[#202D25] border border-[#DDE7DF] py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 transition-colors"
                       >
                         <FlaskConical size={14} className="text-purple-600" />
-                        <span>प्रयोगशाला जांच</span>
+                        <span>{t('refer_to_lab')}</span>
                       </button>
 
                       {/* 5. Mark as Unknown */}
@@ -310,7 +312,7 @@ export const OfficerValidationPage: React.FC = () => {
                         className="bg-white hover:bg-gray-50 text-[#D9534F] border border-red-200 py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center space-x-1.5 transition-colors"
                       >
                         <HelpCircle size={14} />
-                        <span>अज्ञात चिह्नित करें</span>
+                        <span>{t('mark_unknown')}</span>
                       </button>
                     </div>
                   </div>

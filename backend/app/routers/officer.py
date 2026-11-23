@@ -1,6 +1,6 @@
 import time
 from typing import List
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from app.models.schemas import (
     HotspotSchema, 
     BroadcastAlertSchema, 
@@ -9,6 +9,7 @@ from app.models.schemas import (
     CropReportSchema
 )
 from app.routers.reports import STORED_REPORTS
+from app.routers.auth import require_roles, UserModel
 
 router = APIRouter(prefix="/api/officer", tags=["Government Officer Portal"])
 
@@ -128,15 +129,18 @@ def get_hotspots():
     return MAHARASHTRA_HOTSPOTS
 
 @router.get("/reports", response_model=List[CropReportSchema])
-def get_officer_reports():
+def get_officer_reports(current_user: UserModel = Depends(require_roles(["officer", "expert", "admin"]))):
     return STORED_REPORTS
 
 @router.get("/validation-queue", response_model=List[CropReportSchema])
-def get_validation_queue():
+def get_validation_queue(current_user: UserModel = Depends(require_roles(["officer", "expert", "admin"]))):
     return [r for r in STORED_REPORTS if r.status in ["pending", "ai_analyzed"]]
 
 @router.post("/alerts", response_model=BroadcastAlertSchema)
-def broadcast_alert(alert_input: BroadcastAlertCreate):
+def broadcast_alert(
+    alert_input: BroadcastAlertCreate,
+    current_user: UserModel = Depends(require_roles(["officer", "admin"]))
+):
     new_alert = BroadcastAlertSchema(
         id=f"ALT-2026-{int(time.time()) % 1000:03d}",
         title=alert_input.title,
@@ -148,13 +152,22 @@ def broadcast_alert(alert_input: BroadcastAlertCreate):
         messageHi=alert_input.messageHi,
         messageMr=alert_input.messageMr,
         messageEn=alert_input.messageEn,
-        authorOfficer=alert_input.authorOfficer,
+        authorOfficer=alert_input.authorOfficer or current_user.designation or current_user.username,
         targetCount=1240,
         dispatchedAt=time.strftime("%Y-%m-%d %I:%M %p"),
         deliveryStatus="simulated_sent"
     )
     STORED_ALERTS.insert(0, new_alert)
     return new_alert
+
+@router.post("/simulate-retraining")
+def simulate_retraining(current_user: UserModel = Depends(require_roles(["officer", "admin"]))):
+    return {
+        "success": True,
+        "message": "Candidate Model v1.5 benchmark completed: 93.4% accuracy achieved on 1,325 expert-validated samples.",
+        "timestamp": time.strftime("%Y-%m-%d %I:%M %p"),
+        "triggeredBy": current_user.username
+    }
 
 @router.get("/analytics", response_model=LearningMetricsSchema)
 def get_analytics():

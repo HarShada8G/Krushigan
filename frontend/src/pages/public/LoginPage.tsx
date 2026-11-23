@@ -10,26 +10,42 @@ import { UserRole } from '../../types';
 export const LoginPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const initialRole = (searchParams.get('role') as UserRole) || 'farmer';
+  const redirectPath = searchParams.get('redirect');
   const [selectedRole, setSelectedRole] = useState<UserRole>(initialRole);
-  const [phone, setPhone] = useState(initialRole === 'farmer' ? '9822345678' : '9422155667');
+  const [phone, setPhone] = useState(initialRole === 'farmer' ? 'farmer_ramesh' : 'officer_sunita');
+  const [password, setPassword] = useState('demo1234');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  const { login } = useAuth();
+  const { login, loginWithCredentials } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    login(selectedRole);
-    if (selectedRole === 'farmer') {
-      navigate('/farmer/dashboard');
+    setErrorMessage(null);
+    setSubmitting(true);
+    const res = await loginWithCredentials(phone, password, selectedRole);
+    setSubmitting(false);
+
+    if (res.success) {
+      if (redirectPath) {
+        navigate(redirectPath);
+      } else if (selectedRole === 'farmer') {
+        navigate('/farmer/dashboard');
+      } else {
+        navigate('/officer/dashboard');
+      }
     } else {
-      navigate('/officer/dashboard');
+      setErrorMessage(res.error || "लॉगिन असफल। कृपया जानकारी जांचें या नीचे त्वरित डेमो लॉगिन चुनें।");
     }
   };
 
   const handleQuickDemoLogin = (role: UserRole) => {
     login(role);
-    if (role === 'farmer') {
+    if (redirectPath) {
+      navigate(redirectPath);
+    } else if (role === 'farmer') {
       navigate('/farmer/dashboard');
     } else {
       navigate('/officer/dashboard');
@@ -87,17 +103,23 @@ export const LoginPage: React.FC = () => {
             </button>
           </div>
 
+          {errorMessage && (
+            <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-2xl text-xs font-medium">
+              ⚠️ {errorMessage}
+            </div>
+          )}
+
           {/* Form */}
           <form onSubmit={handleLoginSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-bold text-[#202D25] mb-1.5">
-                {selectedRole === 'farmer' ? "मोबाइल नंबर (Phone Number)" : "अधिकारी ईमेल / मोबाइल"}
+                {selectedRole === 'farmer' ? "यूजरनेम / मोबाइल नंबर (Phone / Username)" : "अधिकारी यूजरनेम / ईमेल"}
               </label>
               <input
                 type="text"
                 value={phone}
                 onChange={e => setPhone(e.target.value)}
-                placeholder="उदा. 98223 45678"
+                placeholder={selectedRole === 'farmer' ? "उदा. farmer_ramesh या 9822345678" : "उदा. officer_sunita"}
                 className="w-full px-4 py-3 rounded-xl border border-[#DDE7DF] text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#287A50]"
                 required
               />
@@ -105,24 +127,34 @@ export const LoginPage: React.FC = () => {
 
             <div>
               <label className="block text-xs font-bold text-[#202D25] mb-1.5">
-                पासवर्ड या ओटीपी (Password / OTP)
+                पासवर्ड (Password)
               </label>
               <input
                 type="password"
-                defaultValue="demo1234"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                placeholder="पासवर्ड दर्ज करें"
                 className="w-full px-4 py-3 rounded-xl border border-[#DDE7DF] text-sm focus:outline-none focus:ring-2 focus:ring-[#287A50]"
+                required
               />
               <span className="text-[10px] text-[#5F6F65] mt-1 block">
-                डेमो के लिए कोई भी पासवर्ड मान्य है।
+                डेमो खातों के लिए पासवर्ड: <strong className="font-mono">demo1234</strong>
               </span>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-[#164B35] hover:bg-[#287A50] text-white font-bold py-3.5 rounded-2xl shadow-touch transition-all flex items-center justify-center space-x-2"
+              disabled={submitting}
+              className="w-full bg-[#164B35] hover:bg-[#287A50] text-white font-bold py-3.5 rounded-2xl shadow-touch transition-all flex items-center justify-center space-x-2 disabled:opacity-50"
             >
-              <span>पोर्टल में प्रवेश करें</span>
-              <ArrowRight size={16} />
+              {submitting ? (
+                <span>प्रमाणीकरण हो रहा है...</span>
+              ) : (
+                <>
+                  <span>पोर्टल में प्रवेश करें</span>
+                  <ArrowRight size={16} />
+                </>
+              )}
             </button>
           </form>
 

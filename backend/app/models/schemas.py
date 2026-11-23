@@ -7,6 +7,7 @@ class UserBase(BaseModel):
     phone: Optional[str] = None
     email: Optional[str] = None
     role: Literal["farmer", "officer", "expert", "admin"] = "farmer"
+    state: Optional[str] = "Maharashtra"
     district: Optional[str] = "Akola"
     designation: Optional[str] = None
 

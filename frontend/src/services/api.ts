@@ -19,6 +19,127 @@ import { CROP_DISEASES } from '../data/cropDiseases';
 
 const API_BASE = (import.meta.env.VITE_API_URL as string || '/api').replace(/\/$/, '');
 
+// Token helper
+export const getAuthToken = (): string | null => {
+  return localStorage.getItem('krushigan_token');
+};
+
+export const getAuthHeaders = (): Record<string, string> => {
+  const token = getAuthToken();
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json'
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
+};
+
+// Authentication API calls
+export const loginApi = async (username: string, password: string, role: string = 'farmer') => {
+  const res = await fetch(`${API_BASE}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password, role }),
+    signal: AbortSignal.timeout(4000)
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.detail || `Login failed with HTTP ${res.status}`);
+  }
+  return await res.json();
+};
+
+export const registerApi = async (userData: {
+  username: string;
+  password: string;
+  phone?: string;
+  email?: string;
+  role?: string;
+  district?: string;
+  designation?: string;
+}) => {
+  const res = await fetch(`${API_BASE}/auth/register`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      username: userData.username,
+      password: userData.password,
+      phone: userData.phone,
+      email: userData.email,
+      role: userData.role || 'farmer',
+      district: userData.district || 'Akola',
+      designation: userData.designation || 'Registered Farmer'
+    }),
+    signal: AbortSignal.timeout(4000)
+  });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.detail || `Registration failed with HTTP ${res.status}`);
+  }
+  return await res.json();
+};
+
+export const fetchCurrentUser = async () => {
+  const token = getAuthToken();
+  if (!token) return null;
+  const res = await fetch(`${API_BASE}/auth/me`, {
+    headers: getAuthHeaders(),
+    signal: AbortSignal.timeout(3000)
+  });
+  if (!res.ok) return null;
+  return await res.json();
+};
+
+// AI Assistant Chat API
+export const chatWithAiAssistant = async (
+  message: string,
+  language: string = 'hi',
+  context?: { crop?: string; district?: string; growth_stage?: string }
+): Promise<{
+  answer: string;
+  language: string;
+  isRealAI: boolean;
+  isOfflineDemo: boolean;
+  modelUsed: string;
+  disclaimer?: string;
+}> => {
+  try {
+    const res = await fetch(`${API_BASE}/ai/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message,
+        language,
+        crop: context?.crop,
+        district: context?.district,
+        growth_stage: context?.growth_stage
+      }),
+      signal: AbortSignal.timeout(8000)
+    });
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch (e) {
+    // Falls through to client offline fallback
+  }
+
+  // Graceful client fallback
+  return {
+    answer:
+      language === 'mr'
+        ? "तुमच्या प्रश्नाची नोंद घेतली आहे. अचूक निदानासाठी 'फोटो घ्या' पर्यायाद्वारे पानाचा फोटो तपासा किंवा स्थानिक KVK तज्ज्ञांचा सल्ला घ्या."
+        : language === 'en'
+        ? "Query noted. For exact plant diagnosis, please capture a clear leaf photo via the Scan screen or consult local KVK agronomists."
+        : "आपके सवाल को दर्ज कर लिया गया है। सटीक पहचान के लिए 'फसल की फोटो लें' पर क्लिक करके पत्ते की फोटो जांचें या नजदीकी KVK विशेषज्ञ से संपर्क करें।",
+    language,
+    isRealAI: false,
+    isOfflineDemo: true,
+    modelUsed: 'Offline Knowledge Engine',
+    disclaimer: 'ऑफलाइन मोड: इंटरनेट या एआई सेवा उपलब्ध न होने के कारण स्थानीय सहायता प्रणाली सक्रिय है।'
+  };
+};
+
 // Helper to check if backend is reachable
 let isBackendLive: boolean | null = null;
 
@@ -65,21 +186,34 @@ export const updateFarmerProfile = async (profile: Partial<FarmerProfile>): Prom
 };
 
 // Weather APIs
-export const getWeatherData = async (district: string = 'Akola'): Promise<WeatherData> => {
+export const getWeatherData = async (
+  district: string = 'Akola',
+  lat?: number,
+  lon?: number
+): Promise<WeatherData> => {
   try {
-    const res = await fetch(`${API_BASE}/weather/current?district=${encodeURIComponent(district)}`);
+    let url = `${API_BASE}/weather/current?district=${encodeURIComponent(district)}`;
+    if (lat !== undefined && lon !== undefined) {
+      url += `&lat=${lat}&lon=${lon}`;
+    }
+    const res = await fetch(url, { signal: AbortSignal.timeout(4000) });
     if (res.ok) return await res.json();
   } catch (e) {
     // Fallback
   }
-  return DEMO_WEATHER;
+  return {
+    ...DEMO_WEATHER,
+    district: district || 'Current Location',
+    isDemoData: true
+  };
 };
 
 // Simulated AI Inference Engine for Demo Mode
 export const analyzeCropPhoto = async (
   imageDataUrl: string, 
   cropName: string = 'Tomato',
-  growthStage: string = 'Flowering'
+  growthStage: string = 'Flowering',
+  language: string = 'hi'
 ): Promise<DiagnosisResult> => {
   // If backend is active, send to backend
   try {
@@ -87,7 +221,7 @@ export const analyzeCropPhoto = async (
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ image_data: imageDataUrl, crop: cropName, growth_stage: growthStage }),
-      signal: AbortSignal.timeout(4000)
+      signal: AbortSignal.timeout(9000)
     });
     if (res.ok) {
       return await res.json();
@@ -99,6 +233,66 @@ export const analyzeCropPhoto = async (
   // Deterministic crop-based diagnosis mapping
   const matchedDisease = CROP_DISEASES.find(d => d.crop.toLowerCase() === cropName.toLowerCase()) || CROP_DISEASES[0];
 
+  const getSymptoms = () => {
+    if (language === 'mr' && matchedDisease.symptoms.mr) return matchedDisease.symptoms.mr;
+    if (language === 'en' && matchedDisease.symptoms.en) return matchedDisease.symptoms.en;
+    return matchedDisease.symptoms.hi;
+  };
+
+  const getGreenTitle = () => {
+    if (language === 'mr' && matchedDisease.recommendations.green.titleMr) return matchedDisease.recommendations.green.titleMr;
+    if (language === 'en' && matchedDisease.recommendations.green.titleEn) return matchedDisease.recommendations.green.titleEn;
+    return matchedDisease.recommendations.green.titleHi;
+  };
+
+  const getGreenSteps = () => {
+    if (language === 'mr' && matchedDisease.recommendations.green.stepsMr) return matchedDisease.recommendations.green.stepsMr;
+    if (language === 'en' && matchedDisease.recommendations.green.stepsEn) return matchedDisease.recommendations.green.stepsEn;
+    return matchedDisease.recommendations.green.stepsHi;
+  };
+
+  const getYellowTitle = () => {
+    if (language === 'mr' && matchedDisease.recommendations.yellow.titleMr) return matchedDisease.recommendations.yellow.titleMr;
+    if (language === 'en' && matchedDisease.recommendations.yellow.titleEn) return matchedDisease.recommendations.yellow.titleEn;
+    return matchedDisease.recommendations.yellow.titleHi;
+  };
+
+  const getYellowSteps = () => {
+    if (language === 'mr' && matchedDisease.recommendations.yellow.stepsMr) return matchedDisease.recommendations.yellow.stepsMr;
+    if (language === 'en' && matchedDisease.recommendations.yellow.stepsEn) return matchedDisease.recommendations.yellow.stepsEn;
+    return matchedDisease.recommendations.yellow.stepsHi;
+  };
+
+  const getRedTitle = () => {
+    if (language === 'mr' && matchedDisease.recommendations.red.titleMr) return matchedDisease.recommendations.red.titleMr;
+    if (language === 'en' && matchedDisease.recommendations.red.titleEn) return matchedDisease.recommendations.red.titleEn;
+    return matchedDisease.recommendations.red.titleHi;
+  };
+
+  const getRedInstructions = () => {
+    if (language === 'mr' && matchedDisease.recommendations.red.applicationInstructionsMr) return matchedDisease.recommendations.red.applicationInstructionsMr;
+    if (language === 'en' && matchedDisease.recommendations.red.applicationInstructionsEn) return matchedDisease.recommendations.red.applicationInstructionsEn;
+    return matchedDisease.recommendations.red.applicationInstructionsHi;
+  };
+
+  const getRedPrecautions = () => {
+    if (language === 'mr' && matchedDisease.recommendations.red.safetyPrecautionsMr) return matchedDisease.recommendations.red.safetyPrecautionsMr;
+    if (language === 'en' && matchedDisease.recommendations.red.safetyPrecautionsEn) return matchedDisease.recommendations.red.safetyPrecautionsEn;
+    return matchedDisease.recommendations.red.safetyPrecautionsHi;
+  };
+
+  const getRedDisclaimer = () => {
+    if (language === 'mr' && matchedDisease.recommendations.red.disclaimerMr) return matchedDisease.recommendations.red.disclaimerMr;
+    if (language === 'en' && matchedDisease.recommendations.red.disclaimerEn) return matchedDisease.recommendations.red.disclaimerEn;
+    return matchedDisease.recommendations.red.disclaimerHi;
+  };
+
+  const getEnvTrigger = () => {
+    if (language === 'mr' && matchedDisease.environmentalTrigger.descriptionMr) return matchedDisease.environmentalTrigger.descriptionMr;
+    if (language === 'en' && matchedDisease.environmentalTrigger.descriptionEn) return matchedDisease.environmentalTrigger.descriptionEn;
+    return matchedDisease.environmentalTrigger.descriptionHi;
+  };
+
   return {
     id: `diag_${Date.now()}`,
     reportId: `REP-${Math.floor(1000 + Math.random() * 9000)}`,
@@ -108,32 +302,32 @@ export const analyzeCropPhoto = async (
     marathiName: matchedDisease.nameMr,
     confidenceScore: 0.93,
     severity: matchedDisease.typicalSeverity,
-    symptoms: matchedDisease.symptoms.hi,
+    symptoms: getSymptoms(),
     recommendations: {
       green: {
-        title: matchedDisease.recommendations.green.titleHi,
-        items: matchedDisease.recommendations.green.stepsHi
+        title: getGreenTitle(),
+        items: getGreenSteps()
       },
       yellow: {
-        title: matchedDisease.recommendations.yellow.titleHi,
-        items: matchedDisease.recommendations.yellow.stepsHi,
+        title: getYellowTitle(),
+        items: getYellowSteps(),
         bioAgent: matchedDisease.recommendations.yellow.bioAgent
       },
       red: {
-        title: matchedDisease.recommendations.red.titleHi,
+        title: getRedTitle(),
         isCertified: matchedDisease.recommendations.red.isCertified,
         activeIngredient: matchedDisease.recommendations.red.activeIngredient,
         targetProblem: matchedDisease.recommendations.red.targetProblem,
         authoritySource: matchedDisease.recommendations.red.authoritySource,
-        applicationInstructions: matchedDisease.recommendations.red.applicationInstructionsHi,
-        safetyPrecautions: matchedDisease.recommendations.red.safetyPrecautionsHi,
+        applicationInstructions: getRedInstructions(),
+        safetyPrecautions: getRedPrecautions(),
         preHarvestInterval: matchedDisease.recommendations.red.preHarvestIntervalDays 
-          ? `${matchedDisease.recommendations.red.preHarvestIntervalDays} दिन (Days)`
+          ? `${matchedDisease.recommendations.red.preHarvestIntervalDays} ${language === 'mr' ? 'दिवस' : language === 'en' ? 'Days' : 'दिन'}`
           : undefined,
-        disclaimer: matchedDisease.recommendations.red.disclaimerHi
+        disclaimer: getRedDisclaimer()
       }
     },
-    environmentalRiskCorrelation: matchedDisease.environmentalTrigger.descriptionHi,
+    environmentalRiskCorrelation: getEnvTrigger(),
     isSimulatedDemo: true
   };
 };

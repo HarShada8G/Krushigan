@@ -90,7 +90,8 @@ export const FarmerScanPage: React.FC = () => {
       const diagnosis = await analyzeCropPhoto(
         selectedImage,
         selectedCrop,
-        farmerProfile.growthStage || 'Flowering'
+        farmerProfile.growthStage || 'Flowering',
+        language
       );
 
       // Create new report object

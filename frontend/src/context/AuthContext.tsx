@@ -1,15 +1,29 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { User, UserRole, FarmerProfile } from '../types';
 import { DEMO_FARMER } from '../data/demoData';
+import { loginApi, registerApi, fetchCurrentUser } from '../services/api';
 
 export interface AuthContextType {
   user: User | null;
+  token: string | null;
   farmerProfile: FarmerProfile;
   updateFarmerProfile: (profile: Partial<FarmerProfile>) => void;
   login: (role: UserRole) => void;
+  loginWithCredentials: (username: string, password: string, role?: UserRole) => Promise<{ success: boolean; error?: string }>;
+  registerWithCredentials: (data: {
+    username: string;
+    password: string;
+    role?: UserRole;
+    phone?: string;
+    email?: string;
+    district?: string;
+    designation?: string;
+  }) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   switchRole: (role: UserRole) => void;
   isAuthenticated: boolean;
+  isDemoUser: boolean;
+  isLoading: boolean;
 }
 
 export const DEMO_USERS: Record<UserRole, User> = {
@@ -56,11 +70,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       try {
         return JSON.parse(saved);
       } catch (e) {
-        return DEMO_USERS.farmer;
+        return null;
       }
     }
-    // Default to farmer for easy testing
-    return DEMO_USERS.farmer;
+    return null;
+  });
+
+  const [token, setToken] = useState<string | null>(() => {
+    return localStorage.getItem('krushigan_token') || null;
+  });
+
+  const [isDemoUser, setIsDemoUser] = useState<boolean>(() => {
+    return localStorage.getItem('krushigan_is_demo') === 'true';
+  });
+
+  const [isLoading, setIsLoading] = useState<boolean>(() => {
+    return !!localStorage.getItem('krushigan_token') && localStorage.getItem('krushigan_is_demo') !== 'true';
   });
 
   const [farmerProfile, setFarmerProfile] = useState<FarmerProfile>(() => {
@@ -84,15 +109,167 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, [user]);
 
   useEffect(() => {
+    if (token) {
+      localStorage.setItem('krushigan_token', token);
+    } else {
+      localStorage.removeItem('krushigan_token');
+    }
+  }, [token]);
+
+  useEffect(() => {
     localStorage.setItem('krushigan_farmer_profile', JSON.stringify(farmerProfile));
   }, [farmerProfile]);
 
+  // Validate existing JWT token on application startup
+  useEffect(() => {
+    const verifySession = async () => {
+      const storedToken = localStorage.getItem('krushigan_token');
+      const isDemo = localStorage.getItem('krushigan_is_demo') === 'true';
+
+      // Demo users do not require backend JWT verification
+      if (isDemo && user) {
+        setIsLoading(false);
+        return;
+      }
+
+      if (!storedToken) {
+        setUser(null);
+        setToken(null);
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const verifiedUser = await fetchCurrentUser();
+        if (verifiedUser && verifiedUser.username) {
+          const authedUser: User = {
+            id: verifiedUser.username,
+            name: verifiedUser.username,
+            role: verifiedUser.role as UserRole,
+            phone: verifiedUser.phone,
+            email: verifiedUser.email,
+            district: verifiedUser.district,
+            designation: verifiedUser.designation
+          };
+          setUser(authedUser);
+          localStorage.setItem('krushigan_user', JSON.stringify(authedUser));
+        } else {
+          // Token expired or invalid on the backend
+          logout();
+        }
+      } catch (err) {
+        logout();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    verifySession();
+  }, []);
+
   const login = (role: UserRole) => {
-    setUser(DEMO_USERS[role] || DEMO_USERS.farmer);
+    const demo = DEMO_USERS[role] || DEMO_USERS.farmer;
+    setUser(demo);
+    const demoToken = `demo_jwt_token_${role}`;
+    setToken(demoToken);
+    setIsDemoUser(true);
+    localStorage.setItem('krushigan_user', JSON.stringify(demo));
+    localStorage.setItem('krushigan_token', demoToken);
+    localStorage.setItem('krushigan_is_demo', 'true');
+    if (role === 'farmer') {
+      setFarmerProfile(DEMO_FARMER);
+    }
+  };
+
+  const loginWithCredentials = async (username: string, password: string, role: UserRole = 'farmer') => {
+    setIsLoading(true);
+    try {
+      const res = await loginApi(username, password, role);
+      const authedUser: User = {
+        id: res.user.username,
+        name: res.user.username,
+        role: (res.user.role as UserRole) || role,
+        phone: res.user.phone,
+        email: res.user.email,
+        district: res.user.district,
+        designation: res.user.designation
+      };
+      setUser(authedUser);
+      setToken(res.access_token);
+      setIsDemoUser(false);
+      localStorage.setItem('krushigan_user', JSON.stringify(authedUser));
+      localStorage.setItem('krushigan_token', res.access_token);
+      localStorage.setItem('krushigan_is_demo', 'false');
+
+      if (authedUser.role === 'farmer') {
+        setFarmerProfile(prev => ({
+          ...prev,
+          name: authedUser.name,
+          phone: authedUser.phone || prev.phone,
+          district: authedUser.district || prev.district
+        }));
+      }
+
+      setIsLoading(false);
+      return { success: true };
+    } catch (err: any) {
+      setIsLoading(false);
+      return { success: false, error: err.message || 'Login failed' };
+    }
+  };
+
+  const registerWithCredentials = async (data: {
+    username: string;
+    password: string;
+    role?: UserRole;
+    phone?: string;
+    email?: string;
+    district?: string;
+    designation?: string;
+  }) => {
+    setIsLoading(true);
+    try {
+      const res = await registerApi(data);
+      const registeredUser: User = {
+        id: res.user.username,
+        name: res.user.username,
+        role: (res.user.role as UserRole) || data.role || 'farmer',
+        phone: res.user.phone,
+        email: res.user.email,
+        district: res.user.district,
+        designation: res.user.designation
+      };
+      setUser(registeredUser);
+      setToken(res.access_token);
+      setIsDemoUser(false);
+      localStorage.setItem('krushigan_user', JSON.stringify(registeredUser));
+      localStorage.setItem('krushigan_token', res.access_token);
+      localStorage.setItem('krushigan_is_demo', 'false');
+
+      if (registeredUser.role === 'farmer') {
+        setFarmerProfile(prev => ({
+          ...prev,
+          name: registeredUser.name,
+          phone: registeredUser.phone || prev.phone,
+          district: registeredUser.district || prev.district
+        }));
+      }
+
+      setIsLoading(false);
+      return { success: true };
+    } catch (err: any) {
+      setIsLoading(false);
+      return { success: false, error: err.message || 'Registration failed' };
+    }
   };
 
   const logout = () => {
     setUser(null);
+    setToken(null);
+    setIsDemoUser(false);
+    localStorage.removeItem('krushigan_user');
+    localStorage.removeItem('krushigan_token');
+    localStorage.removeItem('krushigan_is_demo');
   };
 
   const switchRole = (role: UserRole) => {
@@ -107,12 +284,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     <AuthContext.Provider
       value={{
         user,
+        token,
         farmerProfile,
         updateFarmerProfile,
         login,
+        loginWithCredentials,
+        registerWithCredentials,
         logout,
         switchRole,
-        isAuthenticated: !!user
+        isAuthenticated: !!user,
+        isDemoUser,
+        isLoading
       }}
     >
       {children}

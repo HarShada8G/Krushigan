@@ -16,11 +16,15 @@ import { DemoBanner } from '../../components/common/DemoBanner';
 import { DEMO_BROADCAST_ALERTS } from '../../data/demoData';
 import { BroadcastAlert } from '../../types';
 import { createBroadcastAlert } from '../../services/api';
+import { useLanguage } from '../../context/LanguageContext';
+import { getAllStates, getDistrictsForState } from '../../data/indiaLocations';
 
 export const OfficerAlertsPage: React.FC = () => {
+  const { t, language } = useLanguage();
   const [alerts, setAlerts] = useState<BroadcastAlert[]>(DEMO_BROADCAST_ALERTS);
 
   // Form State
+  const [selectedState, setSelectedState] = useState('Maharashtra');
   const [district, setDistrict] = useState('Akola');
   const [taluka, setTaluka] = useState('Akot & Telhara');
   const [crop, setCrop] = useState('Tomato');
@@ -111,28 +115,45 @@ export const OfficerAlertsPage: React.FC = () => {
               </h3>
 
               <form onSubmit={handleSendBroadcast} className="space-y-4 text-xs">
-                {/* District and Taluka Selection */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* State, District and Taluka Selection */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div>
                     <label className="block font-bold text-[#202D25] mb-1">
-                      लक्षित जिला (Target District) *
+                      {language === 'mr' ? 'राज्य (State) *' : language === 'en' ? 'Target State *' : 'लक्षित राज्य (Target State) *'}
+                    </label>
+                    <select
+                      value={selectedState}
+                      onChange={e => {
+                        setSelectedState(e.target.value);
+                        const dists = getDistrictsForState(e.target.value);
+                        if (dists.length > 0) setDistrict(dists[0].name);
+                      }}
+                      className="w-full px-3 py-2 rounded-xl border border-[#DDE7DF] font-bold text-[#164B35] focus:ring-2 focus:ring-[#287A50]"
+                    >
+                      {getAllStates().map(s => (
+                        <option key={s} value={s}>{s}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-[#202D25] mb-1">
+                      {t('select_district')} *
                     </label>
                     <select
                       value={district}
                       onChange={e => setDistrict(e.target.value)}
                       className="w-full px-3 py-2 rounded-xl border border-[#DDE7DF] font-bold text-[#164B35] focus:ring-2 focus:ring-[#287A50]"
                     >
-                      <option value="Akola">अकोला (Akola)</option>
-                      <option value="Nashik">नाशिक (Nashik)</option>
-                      <option value="Amravati">अमरावती (Amravati)</option>
-                      <option value="Nagpur">नागपूर (Nagpur)</option>
-                      <option value="Pune">पुणे (Pune)</option>
+                      {getDistrictsForState(selectedState).map(d => (
+                        <option key={d.name} value={d.name}>{d.name}</option>
+                      ))}
                     </select>
                   </div>
 
                   <div>
                     <label className="block font-bold text-[#202D25] mb-1">
-                      लक्षित तहसीलें (Target Talukas) *
+                      {t('select_taluka')} *
                     </label>
                     <input
                       type="text"
@@ -148,7 +169,7 @@ export const OfficerAlertsPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block font-bold text-[#202D25] mb-1">
-                      लक्षित फसल (Target Crop) *
+                      {t('target_crop')} *
                     </label>
                     <select
                       value={crop}
@@ -164,7 +185,7 @@ export const OfficerAlertsPage: React.FC = () => {
 
                   <div>
                     <label className="block font-bold text-[#202D25] mb-1">
-                      रोग / कीट (Pathogen / Pest) *
+                      {language === 'mr' ? 'रोग / कीड (Pathogen / Pest) *' : language === 'en' ? 'Disease / Pest *' : 'रोग / कीट (Pathogen / Pest) *'}
                     </label>
                     <input
                       type="text"
@@ -223,7 +244,7 @@ export const OfficerAlertsPage: React.FC = () => {
                   className="w-full bg-[#164B35] hover:bg-[#287A50] disabled:opacity-60 text-white font-bold py-3.5 rounded-2xl shadow-touch transition-all flex items-center justify-center space-x-2 text-xs"
                 >
                   <Send size={15} />
-                  <span>{isSending ? "संदेश भेजा जा रहा है..." : "अलर्ट प्रसारित करें (Simulate SMS Broadcast)"}</span>
+                  <span>{isSending ? (language === 'mr' ? "संदेश पाठवला जात आहे..." : language === 'en' ? "Sending advisory..." : "संदेश भेजा जा रहा है...") : t('send_broadcast_btn')}</span>
                 </button>
               </form>
             </div>
