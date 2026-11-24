@@ -41,13 +41,39 @@ export const loginApi = async (username: string, password: string, role: string 
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password, role }),
-    signal: AbortSignal.timeout(4000)
+    signal: AbortSignal.timeout(8000)
   });
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
     throw new Error(errorData.detail || `Login failed with HTTP ${res.status}`);
   }
   return await res.json();
+};
+
+export const demoLoginApi = async (role: string = 'farmer') => {
+  // First attempt dedicated /auth/demo-login endpoint
+  try {
+    const res = await fetch(`${API_BASE}/auth/demo-login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ role }),
+      signal: AbortSignal.timeout(8000)
+    });
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch (e) {
+    // If demo-login fails, fall back to /auth/login
+  }
+
+  const demoUsers: Record<string, { username: string; pass: string }> = {
+    farmer: { username: 'farmer_ramesh', pass: 'demo123' },
+    officer: { username: 'officer_sunita', pass: 'demo123' },
+    expert: { username: 'expert_vinayak', pass: 'demo123' },
+    admin: { username: 'admin_maha_01', pass: 'demo123' }
+  };
+  const target = demoUsers[role] || demoUsers.farmer;
+  return await loginApi(target.username, target.pass, role);
 };
 
 export const registerApi = async (userData: {
@@ -71,7 +97,7 @@ export const registerApi = async (userData: {
       district: userData.district || 'Akola',
       designation: userData.designation || 'Registered Farmer'
     }),
-    signal: AbortSignal.timeout(4000)
+    signal: AbortSignal.timeout(8000)
   });
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
@@ -83,12 +109,16 @@ export const registerApi = async (userData: {
 export const fetchCurrentUser = async () => {
   const token = getAuthToken();
   if (!token) return null;
-  const res = await fetch(`${API_BASE}/auth/me`, {
-    headers: getAuthHeaders(),
-    signal: AbortSignal.timeout(3000)
-  });
-  if (!res.ok) return null;
-  return await res.json();
+  try {
+    const res = await fetch(`${API_BASE}/auth/me`, {
+      headers: getAuthHeaders(),
+      signal: AbortSignal.timeout(6000)
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (e) {
+    return null;
+  }
 };
 
 // AI Assistant Chat API

@@ -8,7 +8,7 @@ from app.routers import auth, farmer, weather, reports, officer, expert, ai
 app = FastAPI(
     title=APP_NAME,
     version=APP_VERSION,
-    description="Krushigan (कृषिगण) Backend API — AI-Powered Crop Disease Detection, Early Warning & Management Platform for Maharashtra Agriculture",
+    description="Krushigan (कृषिगण) Backend API — AI-Powered Crop Disease Detection, Early Warning & Management Platform for Indian Agriculture",
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -44,7 +44,7 @@ def root():
         "version": APP_VERSION,
         "tagline": "Detect Early. Predict Smarter. Act Faster.",
         "platform": "Krushigan — AI Crop Disease Detection Platform",
-        "organization": "Agricultural Technology Initiative for Maharashtra",
+        "organization": "National Agricultural Technology Initiative (Krushigan)",
         "docs": "/docs",
         "status": "operational"
     }

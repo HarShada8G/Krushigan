@@ -402,7 +402,7 @@ export const CROP_DISEASES: DiseaseDetail[] = [
         ],
         stepsEn: [
           "Intensive scout field twice weekly focusing on lower third canopy.",
-          "Adopt resistant/tolerant cultivars recommended for Maharashtra agro-climatic zones."
+          "Adopt resistant/tolerant cultivars recommended for your state and regional agro-climatic zones (ICAR / SAU recommendations)."
         ]
       },
       yellow: {

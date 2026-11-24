@@ -28,7 +28,7 @@ import { VoiceAssistantModal } from '../../components/common/VoiceAssistantModal
 
 export const FarmerDashboardPage: React.FC = () => {
   const { t, language } = useLanguage();
-  const { farmerProfile } = useAuth();
+  const { farmerProfile, isAuthenticated } = useAuth();
   const { speak, isSpeaking } = useSpeechSynthesis(language);
   const [isVoiceOpen, setIsVoiceOpen] = useState(false);
   const [weather, setWeather] = useState<WeatherData>(DEMO_WEATHER);
@@ -76,7 +76,7 @@ export const FarmerDashboardPage: React.FC = () => {
           <Link
             to="/farmer/profile"
             className="w-10 h-10 rounded-full bg-[#EAF4E9] flex items-center justify-center text-[#164B35] hover:bg-emerald-100 transition-colors shadow-sm"
-            title="प्रोफाइल देखें"
+            title="प्रोफाइल व स्थान सेटिंग्स देखें"
           >
             👤
           </Link>

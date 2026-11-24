@@ -1,14 +1,14 @@
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
 import { User, UserRole, FarmerProfile } from '../types';
 import { DEMO_FARMER } from '../data/demoData';
-import { loginApi, registerApi, fetchCurrentUser } from '../services/api';
+import { loginApi, registerApi, fetchCurrentUser, demoLoginApi } from '../services/api';
 
 export interface AuthContextType {
   user: User | null;
   token: string | null;
   farmerProfile: FarmerProfile;
   updateFarmerProfile: (profile: Partial<FarmerProfile>) => void;
-  login: (role: UserRole) => void;
+  login: (role: UserRole) => Promise<{ success: boolean; error?: string }>;
   loginWithCredentials: (username: string, password: string, role?: UserRole) => Promise<{ success: boolean; error?: string }>;
   registerWithCredentials: (data: {
     username: string;
@@ -20,7 +20,7 @@ export interface AuthContextType {
     designation?: string;
   }) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
-  switchRole: (role: UserRole) => void;
+  switchRole: (role: UserRole) => Promise<{ success: boolean; error?: string }>;
   isAuthenticated: boolean;
   isDemoUser: boolean;
   isLoading: boolean;
@@ -124,13 +124,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   useEffect(() => {
     const verifySession = async () => {
       const storedToken = localStorage.getItem('krushigan_token');
-      const isDemo = localStorage.getItem('krushigan_is_demo') === 'true';
-
-      // Demo users do not require backend JWT verification
-      if (isDemo && user) {
-        setIsLoading(false);
-        return;
-      }
 
       if (!storedToken) {
         setUser(null);
@@ -167,17 +160,40 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     verifySession();
   }, []);
 
-  const login = (role: UserRole) => {
-    const demo = DEMO_USERS[role] || DEMO_USERS.farmer;
-    setUser(demo);
-    const demoToken = `demo_jwt_token_${role}`;
-    setToken(demoToken);
-    setIsDemoUser(true);
-    localStorage.setItem('krushigan_user', JSON.stringify(demo));
-    localStorage.setItem('krushigan_token', demoToken);
-    localStorage.setItem('krushigan_is_demo', 'true');
-    if (role === 'farmer') {
-      setFarmerProfile(DEMO_FARMER);
+  const login = async (role: UserRole): Promise<{ success: boolean; error?: string }> => {
+    setIsLoading(true);
+    try {
+      const res = await demoLoginApi(role);
+      const authedUser: User = {
+        id: res.user.username,
+        name: res.user.username,
+        role: (res.user.role as UserRole) || role,
+        phone: res.user.phone,
+        email: res.user.email,
+        district: res.user.district,
+        designation: res.user.designation
+      };
+      setUser(authedUser);
+      setToken(res.access_token);
+      setIsDemoUser(true);
+      localStorage.setItem('krushigan_user', JSON.stringify(authedUser));
+      localStorage.setItem('krushigan_token', res.access_token);
+      localStorage.setItem('krushigan_is_demo', 'true');
+
+      if (authedUser.role === 'farmer') {
+        setFarmerProfile(prev => ({
+          ...prev,
+          name: authedUser.name,
+          phone: authedUser.phone || prev.phone,
+          district: authedUser.district || prev.district
+        }));
+      }
+
+      setIsLoading(false);
+      return { success: true };
+    } catch (err: any) {
+      setIsLoading(false);
+      return { success: false, error: err.message || 'Demo login failed' };
     }
   };
 
@@ -272,8 +288,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     localStorage.removeItem('krushigan_is_demo');
   };
 
-  const switchRole = (role: UserRole) => {
-    login(role);
+  const switchRole = async (role: UserRole): Promise<{ success: boolean; error?: string }> => {
+    return await login(role);
   };
 
   const updateFarmerProfile = (updated: Partial<FarmerProfile>) => {

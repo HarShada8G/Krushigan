@@ -32,7 +32,7 @@ export const translations = {
     problem_2_title: "अनुचित व हानिकारक दवाइयाँ",
     problem_2_desc: "दुकानदार या अनुमान के आधार पर जरूरत से ज्यादा या गलत कीटनाशकों का छिड़काव मिट्टी और लागत दोनों को नुकसान पहुँचाता है।",
     problem_3_title: "भारी आर्थिक नुकसान",
-    problem_3_desc: "महाराष्ट्र में हर साल औसतन 20-30% फसल कीट और फफूंद जनित रोगों के कारण बर्बाद होती है।",
+    problem_3_desc: "देशभर में हर साल औसतन 20-30% फसल कीट और फफूंद जनित रोगों के कारण बर्बाद होती है।",
 
     solution_title: "कृषिगण कैसे मदद करता है?",
     workflow_steps: [
@@ -229,7 +229,7 @@ export const translations = {
     problem_2_title: "अनावश्यक व चुकीची कीटकनाशके",
     problem_2_desc: "अंदाज किंवा दुकानदारांच्या सल्ल्याने अवाजवी फवारणीमुळे खर्च वाढतो आणि मातीचे आरोग्य बिघडते.",
     problem_3_title: "मोठे आर्थिक नुकसान",
-    problem_3_desc: "महाराष्ट्रात दरवर्षी कीड आणि रोगांमुळे सरासरी 20-30% पिकाचे नुकसान होते.",
+    problem_3_desc: "देशभरात दरवर्षी कीड आणि रोगांमुळे सरासरी 20-30% पिकाचे नुकसान होते.",
 
     solution_title: "कृषिगण कशी मदत करते?",
     workflow_steps: [
@@ -426,7 +426,7 @@ export const translations = {
     problem_2_title: "Incorrect Chemical Treatment",
     problem_2_desc: "Excessive or misidentified pesticide spraying burns capital, poisons groundwater, and worsens resistance.",
     problem_3_title: "Massive Financial Crop Loss",
-    problem_3_desc: "Maharashtra farmers lose an estimated 20-30% of total harvest value every season to preventable outbreaks.",
+    problem_3_desc: "Farmers lose an estimated 20-30% of total harvest value every season across India to preventable outbreaks.",
 
     solution_title: "The Krushigan Architecture",
     workflow_steps: [
@@ -547,7 +547,7 @@ export const translations = {
     save_profile_btn: "Save Profile",
 
     // Officer Portal
-    officer_dashboard_title: "Maharashtra Crop Health Surveillance Command Center",
+    officer_dashboard_title: "Crop Health Surveillance Command Center",
     officer_subtitle: "District & Taluka Level Outbreak Surveillance, GIS Hotspots & Early Warning System",
     stat_total_reports: "Total Farmer Reports",
     stat_confirmed_cases: "Confirmed Outbreak Cases",
@@ -558,7 +558,7 @@ export const translations = {
 
     // Officer Tabs & Tools
     tab_overview: "Command Overview",
-    tab_gis_map: "Maharashtra GIS Hotspot Map",
+    tab_gis_map: "National & State GIS Hotspot Map",
     tab_reports: "Farmer Reports Registry",
     tab_validation: "Expert Validation Queue",
     tab_broadcast: "Alert Broadcast (SMS/App)",

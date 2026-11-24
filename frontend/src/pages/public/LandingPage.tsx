@@ -96,7 +96,7 @@ export const LandingPage: React.FC = () => {
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
                     <span className="text-xs font-bold text-[#164B35]">Krushigan Mobile</span>
                   </div>
-                  <span className="text-[10px] text-gray-500">अकोला, महाराष्ट्र</span>
+                  <span className="text-[10px] text-gray-500">अखिल भारतीय कृषि नेटवर्क (Pan-India)</span>
                 </div>
 
                 <div className="relative rounded-xl overflow-hidden aspect-[4/3] bg-emerald-950">

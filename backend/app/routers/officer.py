@@ -120,8 +120,8 @@ def get_dashboard_summary():
             "highRiskVillages": 27,
             "isDemo": True
         },
-        "headline": "Maharashtra Crop Health Surveillance Command Center (Active)",
-        "district": "Akola & State HQ"
+        "headline": "Crop Health Surveillance Command Center (Active)",
+        "district": "National & State Surveillance Network"
     }
 
 @router.get("/hotspots", response_model=List[HotspotSchema])
