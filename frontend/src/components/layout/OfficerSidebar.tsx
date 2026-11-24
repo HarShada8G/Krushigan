@@ -27,9 +27,9 @@ export const OfficerSidebar: React.FC = () => {
     {
       to: "/officer/map",
       icon: Map,
-      labelHi: "महाराष्ट्र GIS हॉटस्पॉट",
-      labelMr: "महाराष्ट्र GIS हॉटस्पॉट",
-      labelEn: "Maharashtra GIS Map"
+      labelHi: "राष्ट्रीय GIS हॉटस्पॉट",
+      labelMr: "राष्ट्रीय GIS हॉटस्पॉट",
+      labelEn: "National GIS Map"
     },
     {
       to: "/officer/reports",
@@ -76,10 +76,13 @@ export const OfficerSidebar: React.FC = () => {
 
   return (
     <aside className="w-64 bg-white border-r border-[#DDE7DF] flex flex-col shrink-0 min-h-[calc(100vh-57px)]">
-      <div className="p-4 border-b border-[#DDE7DF]/60 bg-[#F8F7F0]/60">
+      <div className="p-4 border-b border-[#DDE7DF]/60 bg-[#F8F7F0]/60 flex items-center justify-between">
         <span className="text-[11px] font-bold tracking-wider uppercase text-[#5F6F65]">
           {language === 'mr' ? 'नियंत्रण कक्ष विभाग' : language === 'en' ? 'COMMAND SECTIONS' : 'निगरानी विभाग'}
         </span>
+        <NavLink to="/" className="text-xs text-[#287A50] hover:text-[#164B35] font-semibold" title="मुख्य पृष्ठ (Home)">
+          ← होम
+        </NavLink>
       </div>
 
       <nav className="p-3 space-y-1 flex-1">

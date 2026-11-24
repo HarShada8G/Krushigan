@@ -13,7 +13,7 @@ export const LoginPage: React.FC = () => {
   const redirectPath = searchParams.get('redirect');
   const [selectedRole, setSelectedRole] = useState<UserRole>(initialRole);
   const [phone, setPhone] = useState(initialRole === 'farmer' ? 'farmer_ramesh' : 'officer_sunita');
-  const [password, setPassword] = useState('demo1234');
+  const [password, setPassword] = useState('demo123');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -41,14 +41,22 @@ export const LoginPage: React.FC = () => {
     }
   };
 
-  const handleQuickDemoLogin = (role: UserRole) => {
-    login(role);
-    if (redirectPath) {
-      navigate(redirectPath);
-    } else if (role === 'farmer') {
-      navigate('/farmer/dashboard');
+  const handleQuickDemoLogin = async (role: UserRole) => {
+    setSubmitting(true);
+    setErrorMessage(null);
+    const res = await login(role);
+    setSubmitting(false);
+
+    if (res.success) {
+      if (redirectPath) {
+        navigate(redirectPath);
+      } else if (role === 'farmer') {
+        navigate('/farmer/dashboard');
+      } else {
+        navigate('/officer/dashboard');
+      }
     } else {
-      navigate('/officer/dashboard');
+      setErrorMessage(res.error || "त्वरित डेमो लॉगिन असफल रहा। कृपया पुनः प्रयास करें।");
     }
   };
 
@@ -138,7 +146,7 @@ export const LoginPage: React.FC = () => {
                 required
               />
               <span className="text-[10px] text-[#5F6F65] mt-1 block">
-                डेमो खातों के लिए पासवर्ड: <strong className="font-mono">demo1234</strong>
+                डेमो खातों के लिए पासवर्ड: <strong className="font-mono">demo123</strong> (या demo1234)
               </span>
             </div>
 
@@ -187,6 +195,14 @@ export const LoginPage: React.FC = () => {
                 className="w-full bg-white text-[#164B35] border border-[#287A50]/30 hover:bg-emerald-50 text-xs font-bold py-2 px-3 rounded-xl text-left flex items-center justify-between"
               >
                 <span>🔬 विशेषज्ञ: डॉ. विनायक शिंदे (KVK)</span>
+                <span className="text-[10px] text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">लॉगिन</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleQuickDemoLogin('admin')}
+                className="w-full bg-white text-[#164B35] border border-[#287A50]/30 hover:bg-emerald-50 text-xs font-bold py-2 px-3 rounded-xl text-left flex items-center justify-between"
+              >
+                <span>⚙️ राज्य प्रशासक: कृषि मुख्यालय (Admin HQ)</span>
                 <span className="text-[10px] text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">लॉगिन</span>
               </button>
             </div>

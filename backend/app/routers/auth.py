@@ -1,8 +1,9 @@
 from fastapi import APIRouter, HTTPException, status, Depends, Header
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from typing import Optional, List
+from typing import Optional, List, Literal
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
-from sqlalchemy import or_
+from sqlalchemy import or_, func
 
 from app.database import get_db, SessionLocal
 from app.models.db_models import UserModel
@@ -180,6 +181,8 @@ def login_user(login_data: UserLogin, db: Session = Depends(get_db)):
     """Authenticates users against persistent storage with bcrypt verification and JWT generation."""
     ident = login_data.username.strip()
     clean_digits = "".join(filter(str.isdigit, ident))
+    target_digits = clean_digits[-10:] if len(clean_digits) >= 10 else clean_digits
+    clean_phone_expr = func.replace(func.replace(func.replace(UserModel.phone, ' ', ''), '-', ''), '+91', '')
 
     # Lookup user by username, phone, or email
     user = db.query(UserModel).filter(
@@ -187,14 +190,14 @@ def login_user(login_data: UserLogin, db: Session = Depends(get_db)):
             UserModel.username == ident,
             UserModel.phone == ident,
             UserModel.email == ident,
-            UserModel.phone.ilike(f"%{clean_digits}%") if len(clean_digits) >= 10 else False
+            clean_phone_expr == target_digits if target_digits else False
         )
     ).first()
 
     # If not found by direct identifier, check demo shortcuts (e.g. role as username)
-    if not user and ident in ["farmer", "officer", "expert", "admin"]:
+    if not user and ident.lower() in ["farmer", "officer", "expert", "admin"]:
         user = db.query(UserModel).filter(
-            UserModel.role == ident,
+            UserModel.role == ident.lower(),
             UserModel.is_demo == True
         ).first()
 
@@ -208,7 +211,7 @@ def login_user(login_data: UserLogin, db: Session = Depends(get_db)):
     # Allow demo passwords for demo accounts if triggered via quick demo action
     is_valid_pwd = verify_password(login_data.password, user.hashed_password)
     if not is_valid_pwd:
-        if user.is_demo and login_data.password in ["demo", "demo123", "password", "test"]:
+        if user.is_demo and login_data.password in ["demo", "demo123", "demo1234", "password", "test"]:
             is_valid_pwd = True
 
     if not is_valid_pwd:
@@ -218,6 +221,48 @@ def login_user(login_data: UserLogin, db: Session = Depends(get_db)):
         )
 
     # Generate real signed JWT token
+    token = create_access_token({
+        "sub": user.username,
+        "role": user.role,
+        "user_id": user.id
+    })
+
+    return TokenResponse(
+        access_token=token,
+        token_type="bearer",
+        user=user_to_schema(user)
+    )
+
+class DemoLoginRequest(BaseModel):
+    role: str = "farmer"
+
+@router.post("/demo-login", response_model=TokenResponse)
+def demo_login(req: DemoLoginRequest, db: Session = Depends(get_db)):
+    """Authenticates demo users via the real backend database, generating a signed cryptographic JWT."""
+    seed_demo_users(db)
+    target_role = req.role.strip().lower()
+
+    user = db.query(UserModel).filter(
+        UserModel.role == target_role,
+        UserModel.is_demo == True
+    ).first()
+
+    if not user:
+        role_map = {
+            "farmer": "farmer_ramesh",
+            "officer": "officer_sunita",
+            "expert": "expert_vinayak",
+            "admin": "admin_maha_01"
+        }
+        target_username = role_map.get(target_role, "farmer_ramesh")
+        user = db.query(UserModel).filter(UserModel.username == target_username).first()
+
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Demo account for role '{req.role}' could not be located in database."
+        )
+
     token = create_access_token({
         "sub": user.username,
         "role": user.role,

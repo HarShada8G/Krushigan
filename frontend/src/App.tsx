@@ -47,23 +47,25 @@ export const App: React.FC = () => {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
 
-              {/* Farmer Portal Routes */}
-              <Route path="/farmer/dashboard" element={<ProtectedRoute allowedRoles={['farmer', 'admin']}><FarmerDashboardPage /></ProtectedRoute>} />
-              <Route path="/farmer/scan" element={<ProtectedRoute allowedRoles={['farmer', 'admin']}><FarmerScanPage /></ProtectedRoute>} />
-              <Route path="/farmer/result" element={<ProtectedRoute allowedRoles={['farmer', 'admin']}><FarmerResultPage /></ProtectedRoute>} />
-              <Route path="/farmer/my-crops" element={<ProtectedRoute allowedRoles={['farmer', 'admin']}><FarmerMyCropsPage /></ProtectedRoute>} />
-              <Route path="/farmer/advisory" element={<ProtectedRoute allowedRoles={['farmer', 'admin']}><FarmerAdvisoryPage /></ProtectedRoute>} />
-              <Route path="/farmer/history" element={<ProtectedRoute allowedRoles={['farmer', 'admin']}><FarmerHistoryPage /></ProtectedRoute>} />
-              <Route path="/farmer/profile" element={<ProtectedRoute allowedRoles={['farmer', 'admin']}><FarmerProfilePage /></ProtectedRoute>} />
+              {/* Farmer Portal Routes - Fully accessible to all public visitors & farmers */}
+              <Route path="/farmer/dashboard" element={<FarmerDashboardPage />} />
+              <Route path="/farmer/scan" element={<FarmerScanPage />} />
+              <Route path="/farmer/result" element={<FarmerResultPage />} />
+              <Route path="/farmer/my-crops" element={<FarmerMyCropsPage />} />
+              <Route path="/farmer/advisory" element={<FarmerAdvisoryPage />} />
+              <Route path="/farmer/history" element={<FarmerHistoryPage />} />
+              <Route path="/farmer/profile" element={<FarmerProfilePage />} />
 
-              {/* Officer Portal Routes */}
-              <Route path="/officer/dashboard" element={<ProtectedRoute allowedRoles={['officer', 'expert', 'admin']}><OfficerDashboardPage /></ProtectedRoute>} />
-              <Route path="/officer/map" element={<ProtectedRoute allowedRoles={['officer', 'expert', 'admin']}><OfficerMapPage /></ProtectedRoute>} />
-              <Route path="/officer/reports" element={<ProtectedRoute allowedRoles={['officer', 'expert', 'admin']}><OfficerReportsPage /></ProtectedRoute>} />
-              <Route path="/officer/validation" element={<ProtectedRoute allowedRoles={['officer', 'expert', 'admin']}><OfficerValidationPage /></ProtectedRoute>} />
+              {/* Surveillance & GIS Public Views - Freely browseable without login */}
+              <Route path="/officer/dashboard" element={<OfficerDashboardPage />} />
+              <Route path="/officer/map" element={<OfficerMapPage />} />
+              <Route path="/officer/reports" element={<OfficerReportsPage />} />
+              <Route path="/officer/analytics" element={<OfficerAnalyticsPage />} />
+
+              {/* Genuinely Protected Administrative & Expert Operations */}
+              <Route path="/officer/alerts" element={<ProtectedRoute allowedRoles={['officer', 'admin']}><OfficerAlertsPage /></ProtectedRoute>} />
               <Route path="/officer/farmers" element={<ProtectedRoute allowedRoles={['officer', 'expert', 'admin']}><OfficerFarmersPage /></ProtectedRoute>} />
-              <Route path="/officer/alerts" element={<ProtectedRoute allowedRoles={['officer', 'expert', 'admin']}><OfficerAlertsPage /></ProtectedRoute>} />
-              <Route path="/officer/analytics" element={<ProtectedRoute allowedRoles={['officer', 'expert', 'admin']}><OfficerAnalyticsPage /></ProtectedRoute>} />
+              <Route path="/officer/validation" element={<ProtectedRoute allowedRoles={['officer', 'expert', 'admin']}><OfficerValidationPage /></ProtectedRoute>} />
 
               {/* Expert Portal Routes */}
               <Route path="/expert/validation" element={<ProtectedRoute allowedRoles={['expert', 'officer', 'admin']}><OfficerValidationPage /></ProtectedRoute>} />

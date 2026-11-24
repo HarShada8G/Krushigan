@@ -24,7 +24,7 @@ class RequestImagePayload(BaseModel):
 @router.post("/validate")
 def validate_report(
     payload: ValidationRequest,
-    current_user: UserModel = Depends(require_roles(["expert", "admin"]))
+    current_user: UserModel = Depends(require_roles(["expert", "officer", "admin"]))
 ):
     for r in STORED_REPORTS:
         if r.id == payload.reportId:
@@ -53,7 +53,7 @@ def validate_report(
 @router.post("/request-image")
 def request_new_image(
     payload: RequestImagePayload,
-    current_user: UserModel = Depends(require_roles(["expert", "admin"]))
+    current_user: UserModel = Depends(require_roles(["expert", "officer", "admin"]))
 ):
     return {
         "success": True,
